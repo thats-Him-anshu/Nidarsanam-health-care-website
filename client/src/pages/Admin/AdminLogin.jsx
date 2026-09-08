@@ -1,0 +1,133 @@
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Shield, Lock, Mail, ArrowRight, AlertCircle, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import './AdminLogin.css';
+
+const AdminLogin = () => {
+  const [email, setEmail] = useState('admin@nidarsanam.com');
+  const [password, setPassword] = useState('admin123');
+  const [error, setError] = useState('');
+  const { login, loading, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  // If already logged in, redirect to admin dashboard
+  if (isAuthenticated) {
+    navigate('/admin/dashboard', { replace: true });
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    const res = await login(email, password);
+    if (res.success) {
+      navigate('/admin/dashboard');
+    } else {
+      setError(res.message || 'Invalid credentials');
+    }
+  };
+
+  const fillDemoCredentials = () => {
+    setEmail('admin@nidarsanam.com');
+    setPassword('admin123');
+    setError('');
+  };
+
+  return (
+    <div className="admin-login-root">
+      <div className="admin-login-card">
+        {/* Header */}
+        <div className="admin-login-header">
+          <Link to="/" className="admin-login-brand">
+            <div className="admin-login-emblem">
+              <svg viewBox="0 0 100 100" className="admin-brand-svg">
+                <circle cx="50" cy="50" r="46" fill="#1B4D3E" />
+                <circle cx="50" cy="50" r="36" fill="none" stroke="#D4A574" strokeWidth="2.5" />
+                <path d="M50 18 C34 38 34 64 50 82 C66 64 66 38 50 18 Z" fill="#E8EDE8" />
+                <circle cx="50" cy="50" r="8" fill="#D4A574" />
+              </svg>
+            </div>
+            <div>
+              <span className="admin-brand-title">Nidarsanam</span>
+              <span className="admin-brand-tagline">HEALTHCARE CMS</span>
+            </div>
+          </Link>
+          <h2 className="admin-login-heading">Clinical & Content Portal</h2>
+          <p className="admin-login-sub">Secure access for clinic administrators and physicians</p>
+        </div>
+
+        {/* Demo Credentials Helper Box */}
+        <div className="admin-demo-box" onClick={fillDemoCredentials} role="button" tabIndex={0}>
+          <div className="demo-box-header">
+            <Sparkles size={16} className="demo-sparkle" />
+            <strong>Demo Credentials (Click to Auto-fill):</strong>
+          </div>
+          <div className="demo-credentials-text">
+            <span>Email: <code>admin@nidarsanam.com</code></span>
+            <span>Password: <code>admin123</code></span>
+          </div>
+        </div>
+
+        {/* Error Alert */}
+        {error && (
+          <div className="admin-alert admin-alert-error">
+            <AlertCircle size={18} />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="admin-login-form">
+          <div className="admin-form-group">
+            <label className="admin-form-label">Email or Username</label>
+            <div className="admin-input-wrap">
+              <Mail size={18} className="admin-input-icon" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@nidarsanam.com"
+                className="admin-form-input"
+              />
+            </div>
+          </div>
+
+          <div className="admin-form-group">
+            <label className="admin-form-label">Password</label>
+            <div className="admin-input-wrap">
+              <Lock size={18} className="admin-input-icon" />
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="admin-form-input"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-primary btn-lg btn-admin-login"
+          >
+            <Shield size={18} />
+            <span>{loading ? 'Authenticating...' : 'Sign In to Admin Portal'}</span>
+            <ArrowRight size={16} />
+          </button>
+        </form>
+
+        <div className="admin-login-footer">
+          <Link to="/" className="back-to-site-link">
+            ← Return to Public Website
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AdminLogin;

@@ -1,0 +1,539 @@
+/* =========================================================
+   NIDARSANAM HEALTHCARE — ROOTS & ELEMENTS DESIGN SYSTEM
+   "Modern healthcare thinking, rooted in traditional Indian wisdom."
+   ========================================================= */
+
+@import './animations.css';
+
+/* ---- CSS Custom Properties (Design Tokens) ---- */
+:root {
+  /* Brand Palette */
+  --nid-cream: #F5F1EB;
+  --nid-forest: #1B4D3E;
+  --nid-forest-dark: #12352B;
+  --nid-forest-light: #256754;
+  --nid-brown: #8B7355;
+  --nid-brown-dark: #6D5941;
+  --nid-brown-light: #A89073;
+  --nid-sage: #E8EDE8;
+  --nid-sage-light: #F2F6F2;
+  --nid-sage-dark: #D1DDD1;
+  --nid-gold: #D4A574;
+  --nid-gold-light: #E7C6A2;
+  --nid-gold-dark: #B88550;
+  --nid-dark: #2C2C2C;
+  --nid-dark-muted: #555555;
+  --nid-white: #FFFFFF;
+
+  /* Panchamahabhuta Elemental Tints */
+  --element-akasa: #4E607A;
+  /* Space / Ether */
+  --element-vayu: #7E9E8D;
+  /* Air */
+  --element-agni: #C96843;
+  /* Fire */
+  --element-jala: #4A8C89;
+  /* Water */
+  --element-prthvi: #826644;
+  /* Earth */
+
+  /* Functional / Status */
+  --color-success: #2A7B54;
+  --color-warning: #C98A2C;
+  --color-danger: #B54238;
+  --color-info: #356E8A;
+
+  /* Typography */
+  --font-serif: 'Crimson Text', 'Merriweather', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(27, 77, 62, 0.05);
+  --shadow-md: 0 8px 24px rgba(27, 77, 62, 0.08);
+  --shadow-lg: 0 16px 40px rgba(27, 77, 62, 0.12);
+  --shadow-hover: 0 20px 48px rgba(27, 77, 62, 0.16);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-gold: 0 8px 25px rgba(212, 165, 116, 0.25);
+
+  /* Borders & Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --container-max: 1240px;
+  --container-narrow: 920px;
+  --header-height: 84px;
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--nid-cream);
+  color: var(--nid-dark);
+  line-height: 1.65;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Subtle Indian Botanical / Texture Watermark Overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.025;
+  background-image: radial-gradient(circle at 1px 1px, var(--nid-forest) 1px, transparent 0);
+  background-size: 32px 32px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* Headings & Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif);
+  color: var(--nid-forest);
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 5vw, 3.75rem);
+}
+
+h2 {
+  font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+}
+
+h3 {
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+p {
+  color: var(--nid-dark);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+p.lead {
+  font-size: 1.15rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.75;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+/* Common Layout Utilities */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: var(--container-narrow);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.section {
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
+  position: relative;
+}
+
+.section-sage {
+  background-color: var(--nid-sage);
+}
+
+.section-white {
+  background-color: var(--nid-white);
+}
+
+.section-forest {
+  background-color: var(--nid-forest);
+  color: var(--nid-cream);
+}
+
+.section-forest h1,
+.section-forest h2,
+.section-forest h3,
+.section-forest h4,
+.section-forest p {
+  color: var(--nid-cream);
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 3.5rem auto;
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--nid-brown);
+  margin-bottom: 0.75rem;
+  padding: 0.35rem 0.9rem;
+  background-color: rgba(139, 115, 85, 0.1);
+  border-radius: var(--radius-full);
+}
+
+.section-forest .section-eyebrow {
+  color: var(--nid-gold-light);
+  background-color: rgba(212, 165, 116, 0.15);
+}
+
+.section-title {
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.65;
+}
+
+.section-forest .section-subtitle {
+  color: rgba(245, 241, 235, 0.85);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--nid-forest);
+  color: var(--nid-cream);
+  box-shadow: 0 4px 14px rgba(27, 77, 62, 0.25);
+}
+
+.btn-primary:hover {
+  background-color: var(--nid-forest-light);
+  color: var(--nid-white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(27, 77, 62, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--nid-forest);
+  border-color: var(--nid-forest);
+}
+
+.btn-secondary:hover {
+  background-color: var(--nid-forest);
+  color: var(--nid-cream);
+  transform: translateY(-2px);
+}
+
+.btn-gold {
+  background-color: var(--nid-gold);
+  color: var(--nid-forest-dark);
+  font-weight: 700;
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-gold:hover {
+  background-color: var(--nid-gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(212, 165, 116, 0.4);
+}
+
+.btn-outline-white {
+  background-color: transparent;
+  color: var(--nid-cream);
+  border-color: rgba(245, 241, 235, 0.4);
+}
+
+.btn-outline-white:hover {
+  background-color: var(--nid-cream);
+  color: var(--nid-forest);
+  border-color: var(--nid-cream);
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
+
+.btn-lg {
+  padding: 1rem 2.25rem;
+  font-size: 1.05rem;
+}
+
+/* Cards & Surfaces */
+.card {
+  background-color: var(--nid-white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(27, 77, 62, 0.06);
+  transition: all var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(212, 165, 116, 0.4);
+  transform: translateY(-3px);
+}
+
+.card-sage {
+  background-color: var(--nid-sage);
+  border: 1px solid rgba(27, 77, 62, 0.08);
+}
+
+.card-forest {
+  background-color: var(--nid-forest);
+  color: var(--nid-cream);
+  border: 1px solid rgba(212, 165, 116, 0.2);
+}
+
+/* Badges & Tags */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge-forest {
+  background-color: rgba(27, 77, 62, 0.1);
+  color: var(--nid-forest);
+}
+
+.badge-brown {
+  background-color: rgba(139, 115, 85, 0.12);
+  color: var(--nid-brown);
+}
+
+.badge-gold {
+  background-color: rgba(212, 165, 116, 0.2);
+  color: #7A4E1B;
+}
+
+.badge-sage {
+  background-color: var(--nid-sage);
+  color: var(--nid-forest);
+}
+
+/* Panchamahabhuta Element Styles */
+.element-tag-akasa {
+  background-color: rgba(78, 96, 122, 0.12);
+  color: #2B3D55;
+}
+
+.element-tag-vayu {
+  background-color: rgba(126, 158, 141, 0.15);
+  color: #1E4E3B;
+}
+
+.element-tag-agni {
+  background-color: rgba(201, 104, 67, 0.14);
+  color: #8F3512;
+}
+
+.element-tag-jala {
+  background-color: rgba(74, 140, 137, 0.15);
+  color: #19524F;
+}
+
+.element-tag-prthvi {
+  background-color: rgba(130, 102, 68, 0.15);
+  color: #523B1E;
+}
+
+/* Quotes & Callouts */
+.quote-box {
+  background: linear-gradient(135deg, var(--nid-sage-light) 0%, var(--nid-sage) 100%);
+  border-left: 4px solid var(--nid-gold);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  padding: 2.5rem;
+  position: relative;
+}
+
+.quote-statement {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  color: var(--nid-forest);
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+/* Medical Disclaimer Pill / Box */
+.disclaimer-box {
+  background-color: rgba(139, 115, 85, 0.08);
+  border: 1px solid rgba(139, 115, 85, 0.2);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  font-size: 0.875rem;
+  color: var(--nid-dark-muted);
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.disclaimer-box svg {
+  flex-shrink: 0;
+  color: var(--nid-brown);
+  margin-top: 0.15rem;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--nid-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--nid-brown-light);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--nid-cream);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--nid-forest);
+}
+
+/* Responsive Grid Helpers */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 1024px) {
+  .grid-5 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .grid-5,
+  .grid-4,
+  .grid-3,
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .btn-inline {
+    width: auto;
+  }
+}

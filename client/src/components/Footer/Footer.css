@@ -1,0 +1,375 @@
+/* =========================================================
+   NIDARSANAM HEALTHCARE — FOOTER STYLES
+   ========================================================= */
+
+.footer-root {
+  background-color: var(--nid-forest-dark);
+  color: var(--nid-cream);
+  position: relative;
+  overflow: hidden;
+  margin-top: auto;
+  border-top: 1px solid rgba(212, 165, 116, 0.25);
+}
+
+.footer-root::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 165, 116, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Top Accent Bar */
+.footer-top-accent {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(212, 165, 116, 0.15);
+  padding: 0.75rem 0;
+}
+
+.footer-top-accent-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+}
+
+.footer-accent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--nid-gold-light);
+  font-weight: 500;
+}
+
+.footer-accent-sparkle {
+  color: var(--nid-gold);
+}
+
+.footer-accent-motto {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: rgba(245, 241, 235, 0.7);
+  letter-spacing: 0.02em;
+}
+
+/* Main Container */
+.footer-main-container {
+  padding-top: 4.5rem;
+  padding-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1.2fr 1.3fr;
+  gap: 3.5rem;
+  margin-bottom: 3.5rem;
+}
+
+/* Brand Column */
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  margin-bottom: 1.25rem;
+}
+
+.footer-emblem {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.footer-brand-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.footer-brand-title {
+  display: block;
+  font-family: 'Cinzel', 'Crimson Text', 'Merriweather', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--nid-cream);
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+.footer-brand-sub {
+  display: block;
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--nid-gold);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin-top: 0.15rem;
+}
+
+.footer-brand-tagline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--nid-gold-light);
+  line-height: 1.45;
+  margin-bottom: 1rem;
+}
+
+.footer-positioning-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.footer-pos-badge {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--nid-cream);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background-color: rgba(212, 165, 116, 0.15);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+.footer-pos-dot {
+  color: var(--nid-gold);
+}
+
+.footer-brand-desc {
+  font-size: 0.88rem;
+  color: rgba(245, 241, 235, 0.75);
+  line-height: 1.65;
+}
+
+/* Headings & Links */
+.footer-heading {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--nid-cream);
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.6rem;
+}
+
+.footer-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 32px;
+  height: 2px;
+  background-color: var(--nid-gold);
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-links a {
+  font-size: 0.9rem;
+  color: rgba(245, 241, 235, 0.8);
+  transition: all var(--transition-fast);
+  display: inline-block;
+}
+
+.footer-links a:hover {
+  color: var(--nid-gold-light);
+  transform: translateX(4px);
+}
+
+/* Contact Column */
+.footer-contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-contact-list li {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  color: rgba(245, 241, 235, 0.8);
+  line-height: 1.5;
+}
+
+.footer-icon {
+  flex-shrink: 0;
+  color: var(--nid-gold);
+  margin-top: 0.15rem;
+}
+
+.footer-contact-list a {
+  color: rgba(245, 241, 235, 0.9);
+  transition: color var(--transition-fast);
+}
+
+.footer-contact-list a:hover {
+  color: var(--nid-gold-light);
+  text-decoration: underline;
+}
+
+.footer-social-links {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.footer-social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--nid-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  border: 1px solid rgba(212, 165, 116, 0.2);
+}
+
+.footer-social-icon:hover {
+  background-color: var(--nid-gold);
+  color: var(--nid-forest-dark);
+  transform: translateY(-3px);
+}
+
+/* Disclaimer Card */
+.footer-disclaimer-card {
+  background-color: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+}
+
+.footer-disclaimer-icon {
+  flex-shrink: 0;
+  color: var(--nid-gold);
+  margin-top: 0.2rem;
+}
+
+.footer-disclaimer-text strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--nid-gold-light);
+  margin-bottom: 0.35rem;
+}
+
+.footer-disclaimer-text p {
+  font-size: 0.8rem;
+  color: rgba(245, 241, 235, 0.7);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Bottom Bar */
+.footer-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.82rem;
+  color: rgba(245, 241, 235, 0.65);
+}
+
+.footer-legal-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.footer-legal-links a,
+.footer-legal-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: rgba(245, 241, 235, 0.75);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-legal-links a:hover,
+.footer-legal-btn:hover {
+  color: var(--nid-gold-light);
+}
+
+.footer-dot {
+  color: rgba(212, 165, 116, 0.4);
+}
+
+.footer-admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--nid-gold) !important;
+  font-weight: 600;
+  background-color: rgba(212, 165, 116, 0.12);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+.footer-admin-link:hover {
+  background-color: var(--nid-gold);
+  color: var(--nid-forest-dark) !important;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+  .footer-top-accent-container {
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
+  }
+  .footer-bottom-bar {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  .footer-legal-links {
+    justify-content: center;
+  }
+}

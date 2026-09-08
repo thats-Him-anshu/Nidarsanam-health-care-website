@@ -1,0 +1,619 @@
+/* =========================================================
+   NIDARSANAM HEALTHCARE — CONTACT & APPOINTMENT STYLES
+   ========================================================= */
+
+.contact-hero-section {
+  padding: 5rem 0 4rem 0;
+  background: linear-gradient(180deg, var(--nid-cream) 0%, var(--nid-sage) 100%);
+  text-align: center;
+}
+
+.contact-hero-content {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.contact-hero-title {
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  margin-top: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.contact-hero-subtitle {
+  font-size: 1.2rem;
+  color: var(--nid-dark-muted);
+}
+
+.contact-main-container {
+  padding-top: 3.5rem;
+  padding-bottom: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4.5rem;
+}
+
+/* Consultation Mode Selector Cards */
+.consultation-types-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.consult-card {
+  padding: 2.25rem;
+  cursor: pointer;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  background: var(--nid-white);
+  transition: all var(--transition-normal);
+}
+
+.consult-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--nid-gold);
+  box-shadow: var(--shadow-md);
+}
+
+.consult-card-selected {
+  border-color: var(--nid-forest);
+  background: linear-gradient(135deg, var(--nid-white) 0%, var(--nid-sage-light) 100%);
+  box-shadow: var(--shadow-md);
+}
+
+.consult-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--nid-forest);
+  background-color: var(--nid-sage);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 1rem;
+  width: fit-content;
+}
+
+.consult-title {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.consult-desc {
+  font-size: 0.92rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.consult-select-btn {
+  align-self: flex-start;
+}
+
+.consult-card-selected .consult-select-btn {
+  background-color: var(--nid-forest);
+  color: var(--nid-cream);
+  border-color: var(--nid-forest);
+}
+
+/* Form & Info Grid */
+.form-and-info-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.booking-form-wrapper {
+  padding: 3rem;
+  background: var(--nid-white);
+}
+
+.form-header {
+  margin-bottom: 2rem;
+}
+
+.form-title {
+  font-size: 1.85rem;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.form-subtitle {
+  font-size: 0.95rem;
+  color: var(--nid-dark-muted);
+}
+
+.appointment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--nid-forest);
+  letter-spacing: 0.02em;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(27, 77, 62, 0.18);
+  background-color: var(--nid-cream);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--nid-dark);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: var(--nid-forest);
+  background-color: var(--nid-white);
+  box-shadow: 0 0 0 3px rgba(27, 77, 62, 0.1);
+}
+
+.form-input-error {
+  border-color: var(--color-danger);
+  background-color: rgba(181, 66, 56, 0.04);
+}
+
+.field-error {
+  font-size: 0.78rem;
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+/* Radio pill toggle */
+.consultation-radio-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.radio-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid rgba(27, 77, 62, 0.15);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--nid-forest);
+  cursor: pointer;
+  background-color: var(--nid-cream);
+  transition: all var(--transition-fast);
+}
+
+.radio-pill input {
+  display: none;
+}
+
+.radio-pill:hover {
+  background-color: var(--nid-sage);
+}
+
+.radio-pill-active {
+  border-color: var(--nid-forest);
+  background-color: var(--nid-sage);
+  color: var(--nid-forest-dark);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Consent Box */
+.form-consent-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  background-color: rgba(139, 115, 85, 0.06);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(139, 115, 85, 0.15);
+}
+
+.consent-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.8rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.consent-checkbox-label input {
+  margin-top: 0.2rem;
+  accent-color: var(--nid-forest);
+}
+
+.btn-submit-appointment {
+  margin-top: 0.5rem;
+}
+
+/* Success Card */
+.booking-success-box {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.success-icon-wrap {
+  margin-bottom: 1.25rem;
+}
+
+.success-icon {
+  color: var(--color-success);
+}
+
+.success-title {
+  font-size: 1.85rem;
+  margin-bottom: 0.75rem;
+  color: var(--nid-forest);
+}
+
+.success-desc {
+  font-size: 1rem;
+  color: var(--nid-dark-muted);
+  max-width: 580px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.6;
+}
+
+.success-summary-card {
+  background-color: var(--nid-sage);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  max-width: 520px;
+  margin: 0 auto 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(27, 77, 62, 0.08);
+  padding-bottom: 0.5rem;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.summary-row span {
+  color: var(--nid-dark-muted);
+}
+
+.summary-row strong {
+  color: var(--nid-forest);
+}
+
+.success-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Contact Cards Col */
+.contact-details-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.contact-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.contact-action-card {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  text-decoration: none;
+  background: var(--nid-white);
+  border: 1px solid rgba(27, 77, 62, 0.08);
+  transition: all var(--transition-fast);
+}
+
+.contact-action-card:hover {
+  transform: translateX(4px);
+  border-color: var(--nid-gold);
+  box-shadow: var(--shadow-sm);
+}
+
+.contact-action-icon-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: var(--nid-sage);
+  color: var(--nid-forest);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-icon-whatsapp {
+  background-color: #25D366;
+  color: white;
+}
+
+.contact-action-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.action-card-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--nid-brown);
+}
+
+.action-card-value {
+  font-size: 1.05rem;
+  color: var(--nid-forest);
+}
+
+.action-card-hint {
+  font-size: 0.78rem;
+  color: var(--nid-dark-muted);
+}
+
+/* When to Contact Guidance */
+.when-to-contact-card {
+  padding: 2rem;
+  background: var(--nid-white);
+}
+
+.when-title {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.when-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.when-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: var(--nid-dark);
+  line-height: 1.45;
+}
+
+.when-icon {
+  color: var(--nid-forest);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.emergency-box {
+  background-color: rgba(181, 66, 56, 0.06);
+  border: 1px solid rgba(181, 66, 56, 0.2);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.emergency-icon {
+  color: var(--color-danger);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.emergency-box p {
+  font-size: 0.8rem;
+  color: var(--nid-dark);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.emergency-box strong {
+  color: var(--color-danger);
+}
+
+/* Location Map Section */
+.location-card {
+  padding: 0;
+  overflow: hidden;
+  background: var(--nid-white);
+}
+
+.location-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+}
+
+.location-info-col {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--nid-sage);
+  color: var(--nid-forest);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 1rem;
+  width: fit-content;
+}
+
+.location-name {
+  font-size: 1.6rem;
+  margin-bottom: 0.65rem;
+}
+
+.location-address {
+  font-size: 0.95rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.location-timings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: var(--nid-cream);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+}
+
+.timing-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--nid-dark);
+}
+
+.btn-directions {
+  align-self: flex-start;
+}
+
+.location-map-col {
+  min-height: 380px;
+}
+
+.map-iframe-container {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+}
+
+/* FAQ Accordion */
+.faq-accordion-list {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item-card {
+  background-color: var(--nid-white);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(27, 77, 62, 0.1);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.faq-item-open {
+  border-color: var(--nid-forest);
+  box-shadow: var(--shadow-md);
+}
+
+.faq-question-btn {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-align: left;
+  gap: 1rem;
+}
+
+.faq-q-number {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--nid-gold-dark);
+  flex-shrink: 0;
+}
+
+.faq-question-text {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--nid-forest);
+  flex-grow: 1;
+}
+
+.faq-toggle-icon {
+  color: var(--nid-brown);
+  flex-shrink: 0;
+}
+
+.faq-answer-pane {
+  padding: 0 1.75rem 1.75rem 3.6rem;
+  color: var(--nid-dark-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .form-and-info-grid,
+  .location-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .consultation-types-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+  .consultation-radio-group {
+    grid-template-columns: 1fr;
+  }
+  .booking-form-wrapper,
+  .location-info-col {
+    padding: 1.75rem;
+  }
+  .faq-answer-pane {
+    padding-left: 1.75rem;
+  }
+}

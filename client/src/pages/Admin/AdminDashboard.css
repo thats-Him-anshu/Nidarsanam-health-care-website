@@ -1,0 +1,374 @@
+/* =========================================================
+   NIDARSANAM HEALTHCARE — ADMIN DASHBOARD STYLES
+   ========================================================= */
+
+.admin-dashboard-root {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Header Card */
+.dashboard-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--nid-white);
+  padding: 1.75rem 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(27, 77, 62, 0.08);
+  box-shadow: var(--shadow-sm);
+}
+
+.dashboard-title {
+  font-size: 1.6rem;
+  color: var(--nid-forest);
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.dashboard-subtitle {
+  font-size: 0.88rem;
+  color: var(--nid-dark-muted);
+}
+
+.dashboard-header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* 4 KPI Cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.kpi-card {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: var(--nid-white);
+  border: 1px solid rgba(27, 77, 62, 0.08);
+}
+
+.kpi-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpi-icon-total     { background-color: rgba(27, 77, 62, 0.1); color: var(--nid-forest); }
+.kpi-icon-new       { background-color: rgba(42, 123, 84, 0.12); color: var(--color-success); }
+.kpi-icon-contacted { background-color: rgba(201, 138, 44, 0.15); color: var(--color-warning); }
+.kpi-icon-blogs     { background-color: rgba(139, 115, 85, 0.15); color: var(--nid-brown-dark); }
+
+.kpi-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--nid-brown);
+  letter-spacing: 0.08em;
+}
+
+.kpi-number {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  line-height: 1.1;
+  color: var(--nid-forest);
+}
+
+.kpi-sub {
+  font-size: 0.75rem;
+  color: var(--nid-dark-muted);
+}
+
+/* Analytics Row */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 1.75rem;
+}
+
+.analytics-card {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.analytics-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+}
+
+.analytics-title {
+  font-size: 1.15rem;
+  color: var(--nid-forest);
+  margin-bottom: 0.2rem;
+}
+
+.analytics-sub {
+  font-size: 0.8rem;
+  color: var(--nid-dark-muted);
+}
+
+.analytics-header-icon {
+  color: var(--nid-brown);
+}
+
+.chart-toggle-group {
+  display: flex;
+  gap: 0.25rem;
+  background-color: var(--nid-sage);
+  padding: 0.25rem;
+  border-radius: var(--radius-full);
+}
+
+.chart-toggle-btn {
+  background: none;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  color: var(--nid-forest);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.chart-toggle-btn.active {
+  background-color: var(--nid-forest);
+  color: var(--nid-cream);
+}
+
+/* Chart Bars */
+.chart-bars-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  height: 180px;
+  align-items: flex-end;
+}
+
+.chart-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.bar-track {
+  width: 100%;
+  max-width: 28px;
+  background-color: var(--nid-sage);
+  border-radius: var(--radius-xs);
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--nid-gold) 0%, var(--nid-forest) 100%);
+  border-radius: var(--radius-xs);
+  transition: height 0.5s ease;
+}
+
+.bar-label {
+  font-size: 0.75rem;
+  color: var(--nid-dark-muted);
+  font-weight: 500;
+}
+
+/* Source List */
+.source-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.source-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.source-item-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.source-name {
+  color: var(--nid-dark);
+  font-weight: 500;
+}
+
+.source-count {
+  color: var(--nid-forest);
+}
+
+.source-bar-track {
+  width: 100%;
+  height: 8px;
+  background-color: var(--nid-sage);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.source-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+}
+
+/* Table Card */
+.dashboard-table-card {
+  padding: 1.75rem;
+}
+
+.table-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.table-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.2rem;
+}
+
+.table-subtitle {
+  font-size: 0.82rem;
+  color: var(--nid-dark-muted);
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th {
+  background-color: var(--nid-sage);
+  color: var(--nid-forest);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(27, 77, 62, 0.12);
+}
+
+.admin-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(27, 77, 62, 0.06);
+  font-size: 0.88rem;
+  color: var(--nid-dark);
+}
+
+.admin-table tr:hover td {
+  background-color: rgba(232, 237, 232, 0.4);
+}
+
+.cell-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--nid-dark-muted);
+}
+
+.table-phone-link {
+  color: var(--nid-forest);
+  font-weight: 600;
+}
+
+.concern-tag {
+  background-color: var(--nid-cream);
+  border: 1px solid rgba(27, 77, 62, 0.1);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+}
+
+.consult-type-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: var(--nid-sage);
+  color: var(--nid-forest);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-badge-new        { background-color: rgba(53, 110, 138, 0.15); color: #1E4E64; }
+.status-badge-contacted  { background-color: rgba(201, 138, 44, 0.15); color: #8F5E12; }
+.status-badge-followup   { background-color: rgba(139, 115, 85, 0.15); color: #614D35; }
+.status-badge-converted  { background-color: rgba(42, 123, 84, 0.15); color: #165636; }
+.status-badge-closed     { background-color: rgba(181, 66, 56, 0.12); color: #7E261E; }
+
+.btn-table-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: var(--nid-sage);
+  color: var(--nid-forest);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.btn-table-action:hover {
+  background-color: var(--nid-forest);
+  color: var(--nid-cream);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,168 @@
+/* =========================================================
+   NIDARSANAM HEALTHCARE — ADMIN CMS STYLES
+   ========================================================= */
+
+.admin-cms-root {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.cms-header-card {
+  padding: 1.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cms-title {
+  font-size: 1.6rem;
+  color: var(--nid-forest);
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.cms-sub {
+  font-size: 0.85rem;
+  color: var(--nid-dark-muted);
+}
+
+.save-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(42, 123, 84, 0.15);
+  color: var(--color-success);
+  border: 1px solid var(--color-success);
+  padding: 0.6rem 1.15rem;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* Tabs Navigation */
+.cms-tabs-nav {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.cms-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(27, 77, 62, 0.15);
+  background-color: var(--nid-white);
+  color: var(--nid-forest);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.cms-tab-btn:hover {
+  background-color: var(--nid-sage);
+}
+
+.cms-tab-active {
+  background-color: var(--nid-forest);
+  color: var(--nid-cream);
+  border-color: var(--nid-forest);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Tab Content */
+.cms-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.cms-section-card {
+  padding: 2rem 2.25rem;
+  background: var(--nid-white);
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.cms-card-heading {
+  font-size: 1.3rem;
+  color: var(--nid-forest);
+  border-bottom: 1px solid rgba(27, 77, 62, 0.08);
+  padding-bottom: 0.65rem;
+  margin-bottom: 0.25rem;
+}
+
+.cms-card-sub {
+  font-size: 0.85rem;
+  color: var(--nid-dark-muted);
+}
+
+.cms-save-bar {
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 1.5rem;
+  z-index: 50;
+}
+
+.cms-save-bar button {
+  box-shadow: var(--shadow-lg);
+}
+
+/* FAQ Manager */
+.faq-mgr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.faq-mgr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.faq-mgr-item {
+  background-color: var(--nid-cream);
+  border: 1px solid rgba(27, 77, 62, 0.12);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-mgr-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-num {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--nid-gold-dark);
+}
+
+.btn-delete-faq {
+  background: none;
+  border: none;
+  color: var(--color-danger);
+  cursor: pointer;
+  padding: 0.35rem;
+  border-radius: var(--radius-xs);
+  transition: background var(--transition-fast);
+}
+
+.btn-delete-faq:hover {
+  background-color: rgba(181, 66, 56, 0.1);
+}

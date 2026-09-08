@@ -1,0 +1,537 @@
+/* =========================================================
+   NIDARSANAM HEALTHCARE — ABOUT US PAGE STYLES
+   ========================================================= */
+
+.about-hero-section {
+  padding: 5rem 0 4rem 0;
+  background: linear-gradient(180deg, var(--nid-cream) 0%, var(--nid-sage) 100%);
+  text-align: center;
+}
+
+.about-hero-content {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.about-hero-title {
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.about-hero-subtitle {
+  font-size: 1.2rem;
+  color: var(--nid-dark-muted);
+}
+
+/* Story Section */
+.story-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.story-media-wrap {
+  position: relative;
+}
+
+.story-image-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 5px solid var(--nid-white);
+  height: 460px;
+}
+
+.story-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-floating-stat {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  background: rgba(27, 77, 62, 0.92);
+  backdrop-filter: blur(10px);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-lg);
+  color: var(--nid-cream);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-md);
+}
+
+.story-stat-number {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--nid-gold-light);
+  line-height: 1;
+}
+
+.story-stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nid-cream);
+}
+
+.story-text-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.story-heading {
+  font-size: 2.2rem;
+}
+
+.story-para {
+  margin-bottom: 0.85rem;
+}
+
+.story-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+
+.story-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--nid-forest);
+}
+
+.feature-check {
+  color: var(--nid-gold-dark);
+  flex-shrink: 0;
+}
+
+/* Philosophy Quote Box */
+.about-philosophy-quote {
+  background: var(--nid-white);
+  border-left: 4px solid var(--nid-gold);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.about-quote-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  font-style: italic;
+  color: var(--nid-forest);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+}
+
+.about-quote-explanation {
+  font-size: 1.05rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.7;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* 5 Pillars */
+.pillars-grid {
+  gap: 1.25rem;
+}
+
+.pillar-card {
+  padding: 1.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+.pillar-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.pillar-num {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--nid-gold-dark);
+}
+
+.pillar-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: var(--nid-forest);
+  color: var(--nid-gold-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pillar-title {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+
+.pillar-desc {
+  font-size: 0.85rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Practitioner Deep Detail */
+.practitioner-deep-card {
+  background: var(--nid-cream);
+  border-radius: var(--radius-xl);
+  padding: 3.5rem;
+  border: 1px solid rgba(27, 77, 62, 0.1);
+  box-shadow: var(--shadow-sm);
+}
+
+.practitioner-deep-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 3.5rem;
+}
+
+.practitioner-deep-img-wrap {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  height: 520px;
+}
+
+.practitioner-deep-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.practitioner-deep-badge {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  background: rgba(27, 77, 62, 0.92);
+  backdrop-filter: blur(8px);
+  color: var(--nid-cream);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.practitioner-deep-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.practitioner-deep-name {
+  font-size: 2.4rem;
+  color: var(--nid-forest);
+  margin: 0;
+}
+
+.practitioner-deep-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--nid-brown);
+  margin-bottom: 1rem;
+}
+
+.practitioner-deep-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.deep-section-item {
+  background: var(--nid-white);
+  padding: 1.15rem 1.35rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(27, 77, 62, 0.06);
+}
+
+.deep-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.deep-section-header h4 {
+  font-size: 0.9rem;
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nid-forest);
+  margin: 0;
+}
+
+.deep-icon {
+  color: var(--nid-gold-dark);
+}
+
+.deep-section-item p {
+  font-size: 0.88rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* 6 Differentiators */
+.diff-grid {
+  gap: 1.75rem;
+}
+
+.diff-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--nid-white);
+}
+
+.diff-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.diff-number {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--nid-gold-dark);
+}
+
+.diff-title {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.diff-desc {
+  font-size: 0.92rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Promise Section */
+.promise-section {
+  padding: 5.5rem 0;
+}
+
+.promise-box {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.promise-title {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.promise-text {
+  font-size: 1.2rem;
+  color: rgba(245, 241, 235, 0.85);
+  line-height: 1.65;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .story-grid,
+  .practitioner-deep-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .pillars-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .pillars-grid {
+    grid-template-columns: 1fr;
+  }
+  .practitioner-deep-card {
+    padding: 1.5rem;
+  }
+  .diff-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Panchamahabhuta Cards & Minimalist Elemental Icons in About */
+.panchamahabhuta-about-grid {
+  margin-top: 1.5rem;
+}
+
+.panchamahabhuta-about-grid .element-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.75rem 1.25rem;
+  position: relative;
+  background-color: var(--nid-white);
+  border: 1px solid rgba(27, 77, 62, 0.08);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.panchamahabhuta-about-grid .element-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.panchamahabhuta-about-grid .element-card-akasa:hover { border-color: #4E607A; }
+.panchamahabhuta-about-grid .element-card-vayu:hover  { border-color: #7E9E8D; }
+.panchamahabhuta-about-grid .element-card-agni:hover  { border-color: #C96843; }
+.panchamahabhuta-about-grid .element-card-jala:hover  { border-color: #4A8C89; }
+.panchamahabhuta-about-grid .element-card-prthvi:hover{ border-color: #826644; }
+
+.element-icon-box {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.panchamahabhuta-about-grid .element-card:hover .element-icon-box {
+  transform: scale(1.1) translateY(-2px);
+}
+
+.element-icon-akasa {
+  background: rgba(78, 96, 122, 0.12);
+  color: #3e5068;
+  border: 1.5px solid rgba(78, 96, 122, 0.25);
+}
+.element-card-akasa:hover .element-icon-akasa {
+  background: #4E607A;
+  color: #ffffff;
+  border-color: #4E607A;
+  box-shadow: 0 8px 18px rgba(78, 96, 122, 0.35);
+}
+
+.element-icon-vayu {
+  background: rgba(46, 125, 98, 0.12);
+  color: #20684f;
+  border: 1.5px solid rgba(46, 125, 98, 0.25);
+}
+.element-card-vayu:hover .element-icon-vayu {
+  background: #2E7D62;
+  color: #ffffff;
+  border-color: #2E7D62;
+  box-shadow: 0 8px 18px rgba(46, 125, 98, 0.35);
+}
+
+.element-icon-agni {
+  background: rgba(201, 104, 67, 0.12);
+  color: #b34a21;
+  border: 1.5px solid rgba(201, 104, 67, 0.25);
+}
+.element-card-agni:hover .element-icon-agni {
+  background: #C96843;
+  color: #ffffff;
+  border-color: #C96843;
+  box-shadow: 0 8px 18px rgba(201, 104, 67, 0.35);
+}
+
+.element-icon-jala {
+  background: rgba(43, 122, 140, 0.12);
+  color: #1f6877;
+  border: 1.5px solid rgba(43, 122, 140, 0.25);
+}
+.element-card-jala:hover .element-icon-jala {
+  background: #2B7A8C;
+  color: #ffffff;
+  border-color: #2B7A8C;
+  box-shadow: 0 8px 18px rgba(43, 122, 140, 0.35);
+}
+
+.element-icon-prthvi {
+  background: rgba(130, 102, 68, 0.12);
+  color: #6b5030;
+  border: 1.5px solid rgba(130, 102, 68, 0.25);
+}
+.element-card-prthvi:hover .element-icon-prthvi {
+  background: #826644;
+  color: #ffffff;
+  border-color: #826644;
+  box-shadow: 0 8px 18px rgba(130, 102, 68, 0.35);
+}
+
+.element-sanskrit {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--nid-forest);
+  margin-bottom: 0.15rem;
+}
+
+.element-english {
+  font-size: 0.8rem;
+  color: var(--nid-brown);
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+}
+
+.element-attr {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--nid-gold-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.6rem;
+}
+
+.element-desc {
+  font-size: 0.85rem;
+  color: var(--nid-dark-muted);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.element-explore-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--nid-forest);
+  transition: all var(--transition-fast);
+}
+
+.element-card:hover .element-explore-link {
+  color: var(--nid-gold-dark);
+  transform: translateX(3px);
+}
