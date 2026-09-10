@@ -43,7 +43,7 @@ const DEFAULT_CONTENT = {
       supporting_text: 'At Nidarsanam Healthcare, we look beyond isolated symptoms and explore individual lifestyle patterns, food habits, movement, sleep and daily routines.\n\nOur approach begins with a Panchamahabhuta-based traditional assessment framework and uses that understanding to help personalise food, yoga, lifestyle and appropriate naturopathic approaches.',
       cta_text: 'Explore Our Approach',
       cta_link: '/about',
-      image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1000&q=80',
+      image: '/home-phylosophy.jpg',
     },
     panchamahabhuta: {
       heading: 'Understand Before You Reorder.',
@@ -156,7 +156,7 @@ const DEFAULT_CONTENT = {
         title: 'Traditional Indian Food',
         subtitle: 'Culturally familiar, bio-diverse nutrition',
         description: 'Personalised diet plans based on traditional Indian foods, with plans reviewed and revised regularly according to individual progress.',
-        image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
+        image: '/home-3pillar-indianfood.jpg',
         highlights: ['Heritage rice & millet varieties', 'Indigenous greens & regional vegetables', 'Digestive spices & herbal infusions', 'Regular plan revisions'],
         cta_text: 'Explore Nutrition',
         cta_link: '/about'
@@ -176,7 +176,7 @@ const DEFAULT_CONTENT = {
         title: 'Lifestyle Reordering',
         subtitle: 'Dinacharya & Circadian Harmony',
         description: 'Practical guidance to reorganise food habits, movement, sleep and everyday routines.',
-        image: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=800&q=80',
+        image: '/home-3pillar-Circadian.jpg',
         highlights: ['Meal timing synchronisation', 'Sleep hygiene & circadian alignment', 'Stress management techniques', 'Sustainable daily routines'],
         cta_text: 'Explore Lifestyle',
         cta_link: '/about'
@@ -227,7 +227,7 @@ const DEFAULT_CONTENT = {
       name: 'Dr. Nidarsin',
       qualification: 'BNYS (Bachelor of Naturopathy & Yogic Sciences)',
       title: 'Naturopathy Physician & Holistic Lifestyle Consultant',
-      image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80',
+      image: '/profile.png',
       qualifications_text: 'Graduated with a Bachelor of Naturopathy and Yogic Sciences (BNYS) from a premier recognized medical institution, equipped with comprehensive training in clinical diagnostics, nutrition, yoga therapy, and acupuncture.',
       background_text: 'With years of clinical practice in non-invasive lifestyle medicine, Dr. Nidarsin has guided hundreds of individuals through metabolic, hormonal, and digestive reordering by integrating traditional Indian wisdom with contemporary medical understanding.',
       philosophy_text: 'True healing happens when we address the root imbalances rather than merely managing symptomatic complaints. By aligning our food, movement, and daily routines with our inherent constitutional balance, the body\'s self-regulatory mechanisms flourish.',
@@ -247,7 +247,7 @@ const DEFAULT_CONTENT = {
     hero: {
       headline: 'The Right Way to Look at Health.',
       subheadline: 'Understanding the individual before designing the approach.',
-      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80'
+      image: '/aboutUs-ourJourney.jpg'
     },
     story: {
       heading: 'Why Nidarsanam?',
@@ -272,7 +272,7 @@ const DEFAULT_CONTENT = {
       heading: 'Meet Dr. Nidarsin',
       name: 'Dr. Nidarsin, BNYS',
       title: 'Naturopathy Physician',
-      image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80',
+      image: '/profile.png',
       educational_qualification: 'Bachelor of Naturopathy and Yogic Sciences (BNYS) — Full-time 5.5-year medical degree including intensive clinical internship.',
       professional_background: 'Extensive experience in clinical lifestyle medicine, metabolic disorder management, therapeutic yoga prescription, and classical acupuncture.',
       clinical_philosophy: 'Viewing the patient as a whole human being. Health is not just the absence of disease, but a state of dynamic physical, physiological, and mental vitality.',
@@ -678,6 +678,84 @@ export const CMSProvider = ({ children }) => {
             hero: {
               ...updated.home.hero,
               hero_image: '/home-hero.jpg'
+            }
+          }
+        };
+      }
+    }
+
+    if (updated?.home?.philosophy) {
+      if (!updated.home.philosophy.image || updated.home.philosophy.image.includes('unsplash')) {
+        updated = {
+          ...updated,
+          home: {
+            ...updated.home,
+            philosophy: {
+              ...updated.home.philosophy,
+              image: '/home-phylosophy.jpg'
+            }
+          }
+        };
+      }
+    }
+
+    if (updated?.home?.approaches) {
+      updated = {
+        ...updated,
+        home: {
+          ...updated.home,
+          approaches: updated.home.approaches.map(a => {
+            if (a.id === 'food' && (!a.image || a.image.includes('unsplash'))) {
+              return { ...a, image: '/home-3pillar-indianfood.jpg' };
+            }
+            if (a.id === 'lifestyle' && (!a.image || a.image.includes('unsplash'))) {
+              return { ...a, image: '/home-3pillar-Circadian.jpg' };
+            }
+            return a;
+          })
+        }
+      };
+    }
+
+    if (updated?.home?.practitioner) {
+      if (!updated.home.practitioner.image || updated.home.practitioner.image.includes('unsplash')) {
+        updated = {
+          ...updated,
+          home: {
+            ...updated.home,
+            practitioner: {
+              ...updated.home.practitioner,
+              image: '/profile.png'
+            }
+          }
+        };
+      }
+    }
+
+    if (updated?.about?.hero) {
+      if (!updated.about.hero.image || updated.about.hero.image.includes('unsplash')) {
+        updated = {
+          ...updated,
+          about: {
+            ...updated.about,
+            hero: {
+              ...updated.about.hero,
+              image: '/aboutUs-ourJourney.jpg'
+            }
+          }
+        };
+      }
+    }
+
+    if (updated?.about?.practitioner_detail) {
+      if (!updated.about.practitioner_detail.image || updated.about.practitioner_detail.image.includes('unsplash')) {
+        updated = {
+          ...updated,
+          about: {
+            ...updated.about,
+            practitioner_detail: {
+              ...updated.about.practitioner_detail,
+              image: '/profile.png'
             }
           }
         };

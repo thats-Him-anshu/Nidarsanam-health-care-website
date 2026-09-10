@@ -70,6 +70,48 @@ try {
       console.warn('Hero image cache migration notice:', err);
     }
   }
+
+  // Migrate all custom section images if browser still has old Unsplash images
+  if (contentStr) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem('nidarsanam_content') || contentStr);
+      let changed = false;
+      if (parsed.home?.philosophy && parsed.home.philosophy.image !== '/home-phylosophy.jpg') {
+        parsed.home.philosophy.image = '/home-phylosophy.jpg';
+        changed = true;
+      }
+      if (parsed.home?.approaches) {
+        parsed.home.approaches = parsed.home.approaches.map(a => {
+          if (a.id === 'food' && a.image !== '/home-3pillar-indianfood.jpg') {
+            changed = true;
+            return { ...a, image: '/home-3pillar-indianfood.jpg' };
+          }
+          if (a.id === 'lifestyle' && a.image !== '/home-3pillar-Circadian.jpg') {
+            changed = true;
+            return { ...a, image: '/home-3pillar-Circadian.jpg' };
+          }
+          return a;
+        });
+      }
+      if (parsed.home?.practitioner && parsed.home.practitioner.image !== '/profile.png') {
+        parsed.home.practitioner.image = '/profile.png';
+        changed = true;
+      }
+      if (parsed.about?.hero && parsed.about.hero.image !== '/aboutUs-ourJourney.jpg') {
+        parsed.about.hero.image = '/aboutUs-ourJourney.jpg';
+        changed = true;
+      }
+      if (parsed.about?.practitioner_detail && parsed.about.practitioner_detail.image !== '/profile.png') {
+        parsed.about.practitioner_detail.image = '/profile.png';
+        changed = true;
+      }
+      if (changed) {
+        localStorage.setItem('nidarsanam_content', JSON.stringify(parsed));
+      }
+    } catch (err) {
+      console.warn('Custom images migration notice:', err);
+    }
+  }
 } catch (e) {
   console.warn('Cache migration notice:', e);
 }
