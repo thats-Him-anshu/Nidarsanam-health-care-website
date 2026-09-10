@@ -120,6 +120,20 @@ try {
       console.warn('Custom images migration notice:', err);
     }
   }
+
+  // Clear legacy sample blogs from localStorage if present
+  const blogsStr = localStorage.getItem('nidarsanam_blogs');
+  if (blogsStr && (blogsStr.includes('blog_1') || blogsStr.includes('Traditional Indian Breakfasts') || blogsStr.includes('blog_2') || blogsStr.includes('blog_3') || blogsStr.includes('blog_4'))) {
+    try {
+      const parsed = JSON.parse(blogsStr);
+      if (Array.isArray(parsed)) {
+        const cleaned = parsed.filter(b => !['blog_1', 'blog_2', 'blog_3', 'blog_4'].includes(b._id));
+        localStorage.setItem('nidarsanam_blogs', JSON.stringify(cleaned));
+      }
+    } catch (err) {
+      localStorage.setItem('nidarsanam_blogs', JSON.stringify([]));
+    }
+  }
 } catch (e) {
   console.warn('Cache migration notice:', e);
 }

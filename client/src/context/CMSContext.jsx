@@ -372,159 +372,19 @@ const DEFAULT_CONTENT = {
 
 // Initial Categories
 const DEFAULT_CATEGORIES = [
-  { id: 'cat_1', name: 'Traditional Indian Food', slug: 'traditional-indian-food', count: 4, icon: '🌾' },
-  { id: 'cat_2', name: 'Nutrition', slug: 'nutrition', count: 3, icon: '🥗' },
-  { id: 'cat_3', name: 'Yoga', slug: 'yoga', count: 3, icon: '🧘' },
-  { id: 'cat_4', name: 'Lifestyle', slug: 'lifestyle', count: 3, icon: '☀️' },
-  { id: 'cat_5', name: 'Naturopathy', slug: 'naturopathy', count: 2, icon: '🌿' },
-  { id: 'cat_6', name: 'Panchamahabhuta', slug: 'panchamahabhuta', count: 2, icon: '🌌' },
-  { id: 'cat_7', name: 'Women\'s Health', slug: 'womens-health', count: 2, icon: '🌸' },
-  { id: 'cat_8', name: 'Metabolic Health', slug: 'metabolic-health', count: 3, icon: '⚡' },
-  { id: 'cat_9', name: 'Healthy Living', slug: 'healthy-living', count: 2, icon: '🌱' }
+  { id: 'cat_1', name: 'Traditional Indian Food', slug: 'traditional-indian-food', count: 0, icon: '🌾' },
+  { id: 'cat_2', name: 'Nutrition', slug: 'nutrition', count: 0, icon: '🥗' },
+  { id: 'cat_3', name: 'Yoga', slug: 'yoga', count: 0, icon: '🧘' },
+  { id: 'cat_4', name: 'Lifestyle', slug: 'lifestyle', count: 0, icon: '☀️' },
+  { id: 'cat_5', name: 'Naturopathy', slug: 'naturopathy', count: 0, icon: '🌿' },
+  { id: 'cat_6', name: 'Panchamahabhuta', slug: 'panchamahabhuta', count: 0, icon: '🌌' },
+  { id: 'cat_7', name: 'Women\'s Health', slug: 'womens-health', count: 0, icon: '🌸' },
+  { id: 'cat_8', name: 'Metabolic Health', slug: 'metabolic-health', count: 0, icon: '⚡' },
+  { id: 'cat_9', name: 'Healthy Living', slug: 'healthy-living', count: 0, icon: '🌱' }
 ];
 
-// Initial Blogs
-const DEFAULT_BLOGS = [
-  {
-    _id: 'blog_1',
-    title: 'Traditional Indian Breakfasts: What Makes a Truly Balanced Plate?',
-    slug: 'traditional-indian-breakfasts-balanced-plate',
-    excerpt: 'Explore how traditional Indian breakfasts—from fermented idlis to vegetable-rich poha and millet porridge—provide ideal digestive ease and sustained morning energy.',
-    content: `
-      <h2>The Wisdom of Fermentation and Bio-Availability</h2>
-      <p>For generations, traditional Indian morning meals were crafted not just for taste, but for digestive fire (Agni) and sustained vitality. Unlike sugary cereals or ultra-processed modern breakfasts, classical Indian preparations rely on natural fermentation, indigenous lentils, and seasonal vegetables.</p>
-      
-      <h3>Why Fermented Foods Support Morning Metabolism</h3>
-      <p>Fermented foods like traditional idlis and dosas combine rice and urad dal in a ratio that provides complementary amino acids. The overnight fermentation process breaks down phytic acid, significantly boosting the bioavailability of iron, zinc, and B-vitamins while cultivating beneficial prebiotic microflora in the gut.</p>
-
-      <h3>Building Your Morning Plate: 4 Essential Elements</h3>
-      <ul>
-        <li><strong>Complex Carbohydrates:</strong> Heritage unpolished rice, whole wheat, or ragi providing steady glucose release.</li>
-        <li><strong>Plant Protein:</strong> Soaked and cooked lentils, sprouts, or tempered sambar rich in essential amino acids.</li>
-        <li><strong>Digestive Spices:</strong> Mustard seeds, cumin, curry leaves, and ginger to stimulate enzymatic secretions.</li>
-        <li><strong>Hydrating Vegetables:</strong> Bottle gourd, pumpkin, drumsticks, or native greens added to your morning preparations.</li>
-      </ul>
-
-      <p>When breakfast works in harmony with your body's natural circadian rhythm, you experience steady mental clarity, stable blood sugar, and freedom from mid-morning energy crashes.</p>
-    `,
-    category_name: 'Traditional Indian Food',
-    author: 'Dr. Nidarsin, BNYS',
-    featured_image_url: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=1000&q=80',
-    published_at: '2026-08-25',
-    reading_time_minutes: 5,
-    view_count: 342,
-    status: 'Published',
-    is_featured: true,
-    key_takeaways: [
-      'Fermentation enhances nutrient bioavailability and gut microbiome diversity.',
-      'Combining native grains with pulses creates complete plant-based proteins.',
-      'Digestive spices like cumin and ginger ignite morning metabolic fire.'
-    ],
-    seo_title: 'Traditional Indian Breakfasts for Balanced Health | Nidarsanam',
-    meta_description: 'Discover how traditional Indian breakfasts provide sustained energy, digestive ease, and essential nutrition without processed fads.'
-  },
-  {
-    _id: 'blog_2',
-    title: 'Millets in Traditional Indian Diets: Understanding Their Proper Place',
-    slug: 'millets-in-traditional-indian-diets',
-    excerpt: 'Millets have gained immense popularity, but how should they be prepared and paired according to traditional wisdom for optimal digestive comfort?',
-    content: `
-      <h2>Beyond the Superfood Hype: Ancient Millets Decoded</h2>
-      <p>Millets such as Ragi (Finger Millet), Jowar (Sorghum), Bajra (Pearl Millet), and Siridhanya grains have been staple nourishments in the Indian subcontinent for thousands of years. While modern nutrition lauds them for their high dietary fibre and low glycemic index, traditional wisdom emphasizes the method of preparation.</p>
-
-      <h3>Preparation Matters: Soaking, Fermenting, and Seasonality</h3>
-      <p>Because millets contain natural anti-nutrients and drying (Ruksha) qualities, consuming them raw or unsoaked can strain sluggish digestion. Traditional Indian cuisine always incorporates methods to balance these qualities:</p>
-      <ul>
-        <li><strong>Adequate Soaking:</strong> Soaking millets for 4 to 8 hours softens fibres and neutralises enzyme inhibitors.</li>
-        <li><strong>Hydrating Fats:</strong> Cooking with cold-pressed sesame oil or a teaspoon of traditional A2 ghee balances the dry quality.</li>
-        <li><strong>Seasonal Alignment:</strong> Bajra is traditionally embraced in cooler months for warming energy, whereas Ragi and Jowar provide cooling stability during summer.</li>
-      </ul>
-      <p>Incorporating millets mindfully alongside familiar vegetables and lentils allows your physiology to reap maximum metabolic benefit without digestive bloating.</p>
-    `,
-    category_name: 'Nutrition',
-    author: 'Dr. Nidarsin, BNYS',
-    featured_image_url: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=1000&q=80',
-    published_at: '2026-08-20',
-    reading_time_minutes: 6,
-    view_count: 289,
-    status: 'Published',
-    is_featured: false,
-    key_takeaways: [
-      'Millets should always be soaked adequately to facilitate gentle digestion.',
-      'Pairing millets with natural healthy fats balances their inherent dryness.',
-      'Choose millets according to the season and individual constitutional heat.'
-    ],
-    seo_title: 'Millets in Traditional Indian Diets | Nidarsanam Healthcare',
-    meta_description: 'Learn how to properly prepare and incorporate ancient Indian millets for metabolic balance and digestive comfort.'
-  },
-  {
-    _id: 'blog_3',
-    title: 'Understanding Panchamahabhuta: A Traditional Perspective on Healing',
-    slug: 'understanding-panchamahabhuta-traditional-perspective',
-    excerpt: 'A comprehensive guide into how Space, Air, Fire, Water, and Earth interact within the human physiology to govern health, vitality, and longevity.',
-    content: `
-      <h2>The Universal Blueprint of Life</h2>
-      <p>The Panchamahabhuta framework is one of the most profound concepts in classical Indian medicine. It posits that every living organism is an interconnected microcosm of the universe, shaped by five primordial elements: Space (Ākāśa), Air (Vāyu), Fire (Agni), Water (Jala), and Earth (Pṛthvi).</p>
-
-      <h3>How the Five Elements Function in Your Body</h3>
-      <p>When these five forces operate in harmonious equilibrium, cellular vitality is effortless. When lifestyle disruptions, unnatural food timing, or prolonged stress skew this balance, symptoms begin to surface:</p>
-      <ul>
-        <li><strong>Space & Air:</strong> Govern bodily communication, breathing rhythms, nerve conduction, and mental calm.</li>
-        <li><strong>Fire:</strong> Governs digestion, metabolic transformation, body warmth, and cognitive discernment.</li>
-        <li><strong>Water & Earth:</strong> Govern physical structure, cellular lubrication, joint flexibility, and tissue immunity.</li>
-      </ul>
-      <p>At Nidarsanam Healthcare, our diagnostic consultations decode these elemental expressions, allowing us to personalise your food and lifestyle adjustments with surgical precision.</p>
-    `,
-    category_name: 'Panchamahabhuta',
-    author: 'Dr. Nidarsin, BNYS',
-    featured_image_url: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1000&q=80',
-    published_at: '2026-08-15',
-    reading_time_minutes: 7,
-    view_count: 412,
-    status: 'Published',
-    is_featured: false,
-    key_takeaways: [
-      'The 5 elements form the foundation of our metabolic and nervous systems.',
-      'Lifestyle reordering restores elemental harmony before chronic imbalances take root.',
-      'Personalised care targets the specific element out of balance in the individual.'
-    ],
-    seo_title: 'Panchamahabhuta Framework Explained | Nidarsanam Healthcare',
-    meta_description: 'Explore the five elements of Panchamahabhuta and how understanding them transforms modern lifestyle medicine.'
-  },
-  {
-    _id: 'blog_4',
-    title: 'Why Meal Timing and Dinacharya Matter in Metabolic Health',
-    slug: 'meal-timing-dinacharya-metabolic-health',
-    excerpt: 'How aligning your daily eating schedule with circadian biology and traditional Dinacharya can transform insulin sensitivity and digestive comfort.',
-    content: `
-      <h2>The Clock Within Your Digestive Organs</h2>
-      <p>Modern chronobiology confirms what ancient Indian traditions practiced for centuries: your metabolism is not constant throughout the day. Digestive enzymes, insulin secretion, and bile production peak when the sun is highest (aligning with midday Agni) and decline as darkness sets in.</p>
-      
-      <h3>3 Core Principles of Dinacharya Meal Timing</h3>
-      <ul>
-        <li><strong>Align with Peak Sun:</strong> Make your midday meal the most nourishing and comprehensive plate of the day.</li>
-        <li><strong>Light, Early Dinners:</strong> Consume dinner at least 2.5 to 3 hours before sleep to allow full gastric emptying.</li>
-        <li><strong>Digestive Rest:</strong> Allow a natural 12-hour overnight resting window between dinner and the next morning\'s breakfast.</li>
-      </ul>
-      <p>By simply reordering when you eat, without drastic caloric restriction, the body naturally enhances cellular repair, deepens slow-wave sleep, and balances metabolic hormones.</p>
-    `,
-    category_name: 'Lifestyle',
-    author: 'Dr. Nidarsin, BNYS',
-    featured_image_url: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=1000&q=80',
-    published_at: '2026-08-10',
-    reading_time_minutes: 5,
-    view_count: 365,
-    status: 'Published',
-    is_featured: false,
-    key_takeaways: [
-      'Digestive enzyme activity peaks during midday in sync with solar cycles.',
-      'Early, lighter dinners prevent acid reflux and enhance restorative sleep.',
-      'A 12-hour overnight resting window supports cellular autophagy.'
-    ],
-    seo_title: 'Meal Timing & Circadian Rhythms | Nidarsanam Healthcare',
-    meta_description: 'Discover how aligning meal times with traditional Dinacharya supports metabolic balance and insulin sensitivity.'
-  }
-];
+// Initial Blogs (starts empty; create and manage blogs via Admin CMS)
+const DEFAULT_BLOGS = [];
 
 // Initial Sample Leads
 const DEFAULT_LEADS = [
@@ -930,7 +790,21 @@ export const CMSProvider = ({ children }) => {
   // Blogs
   const [blogs, setBlogs] = useState(() => {
     const saved = localStorage.getItem('nidarsanam_blogs');
-    return saved ? JSON.parse(saved) : DEFAULT_BLOGS;
+    if (!saved) return DEFAULT_BLOGS;
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        // Automatically filter out legacy sample dummy articles
+        const cleaned = parsed.filter(b => !['blog_1', 'blog_2', 'blog_3', 'blog_4'].includes(b._id));
+        if (cleaned.length !== parsed.length) {
+          localStorage.setItem('nidarsanam_blogs', JSON.stringify(cleaned));
+        }
+        return cleaned;
+      }
+      return DEFAULT_BLOGS;
+    } catch {
+      return DEFAULT_BLOGS;
+    }
   });
 
   // Categories

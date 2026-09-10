@@ -244,8 +244,19 @@ const AdminBlogs = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredBlogs.map((blog) => (
-                <tr key={blog._id}>
+              {filteredBlogs.length === 0 ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '3.5rem 1rem', color: 'var(--nid-stone)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+                      <FileText size={32} style={{ opacity: 0.4 }} />
+                      <p style={{ margin: 0, fontWeight: 600, color: 'var(--nid-charcoal)' }}>No articles found</p>
+                      <p style={{ margin: 0, fontSize: '0.875rem' }}>Click &quot;+ Write New Article&quot; above to create your first journal article.</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                filteredBlogs.map((blog) => (
+                  <tr key={blog._id}>
                   <td>
                     <div className="blog-cell-media">
                       <img
@@ -318,7 +329,8 @@ const AdminBlogs = () => {
                     </div>
                   </td>
                 </tr>
-              ))}
+              ))
+            )}
             </tbody>
           </table>
         </div>
