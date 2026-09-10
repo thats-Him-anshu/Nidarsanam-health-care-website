@@ -286,7 +286,7 @@ const Home = () => {
               <div key={approach.id} className="card approach-card">
                 <div className="approach-img-wrap">
                   <img src={approach.image} alt={approach.title} className="approach-img" />
-                  <span className="approach-badge">{approach.subtitle}</span>
+                  <span className="approach-badge">{approach.subtitle?.replace(/\s*Dinacharya\s*&?\s*/gi, '').trim() || approach.subtitle}</span>
                 </div>
                 <div className="approach-content">
                   <h3 className="approach-title">{approach.title}</h3>

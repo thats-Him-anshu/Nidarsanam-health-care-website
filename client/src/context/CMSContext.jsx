@@ -174,7 +174,7 @@ const DEFAULT_CONTENT = {
       {
         id: 'lifestyle',
         title: 'Lifestyle Reordering',
-        subtitle: 'Dinacharya & Circadian Harmony',
+        subtitle: 'Circadian Harmony',
         description: 'Practical guidance to reorganise food habits, movement, sleep and everyday routines.',
         image: '/home-3pillar-Circadian.jpg',
         highlights: ['Meal timing synchronisation', 'Sleep hygiene & circadian alignment', 'Stress management techniques', 'Sustainable daily routines'],
@@ -708,8 +708,16 @@ export const CMSProvider = ({ children }) => {
             if (a.id === 'food' && (!a.image || a.image.includes('unsplash'))) {
               return { ...a, image: '/home-3pillar-indianfood.jpg' };
             }
-            if (a.id === 'lifestyle' && (!a.image || a.image.includes('unsplash'))) {
-              return { ...a, image: '/home-3pillar-Circadian.jpg' };
+            if (a.id === 'lifestyle') {
+              const needsImg = !a.image || a.image.includes('unsplash');
+              const needsSub = a.subtitle?.includes('Dinacharya');
+              if (needsImg || needsSub) {
+                return {
+                  ...a,
+                  image: needsImg ? '/home-3pillar-Circadian.jpg' : a.image,
+                  subtitle: 'Circadian Harmony'
+                };
+              }
             }
             return a;
           })

@@ -86,9 +86,17 @@ try {
             changed = true;
             return { ...a, image: '/home-3pillar-indianfood.jpg' };
           }
-          if (a.id === 'lifestyle' && a.image !== '/home-3pillar-Circadian.jpg') {
-            changed = true;
-            return { ...a, image: '/home-3pillar-Circadian.jpg' };
+          if (a.id === 'lifestyle') {
+            let updatedLifestyle = { ...a };
+            if (a.image !== '/home-3pillar-Circadian.jpg') {
+              updatedLifestyle.image = '/home-3pillar-Circadian.jpg';
+              changed = true;
+            }
+            if (a.subtitle?.includes('Dinacharya')) {
+              updatedLifestyle.subtitle = 'Circadian Harmony';
+              changed = true;
+            }
+            return updatedLifestyle;
           }
           return a;
         });
