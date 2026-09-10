@@ -58,6 +58,18 @@ try {
       console.warn('Map cache migration notice:', err);
     }
   }
+  // Migrate hero image if using HEIC or old unsplash
+  if (contentStr && (contentStr.includes('HEIC') || contentStr.includes('photo-1589301760014'))) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem('nidarsanam_content') || contentStr);
+      if (parsed.home?.hero) {
+        parsed.home.hero.hero_image = '/home-hero.jpg';
+        localStorage.setItem('nidarsanam_content', JSON.stringify(parsed));
+      }
+    } catch (err) {
+      console.warn('Hero image cache migration notice:', err);
+    }
+  }
 } catch (e) {
   console.warn('Cache migration notice:', e);
 }

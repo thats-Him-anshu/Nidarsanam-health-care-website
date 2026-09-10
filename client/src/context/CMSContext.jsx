@@ -36,7 +36,7 @@ const DEFAULT_CONTENT = {
       primary_cta_link: '/contact',
       secondary_cta_text: 'Discover Our Approach',
       secondary_cta_link: '#philosophy',
-      hero_image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=1200&q=80',
+      hero_image: '/home-hero.jpg',
     },
     philosophy: {
       large_statement: 'We don\'t begin with the condition. We begin by understanding the individual.',
@@ -662,6 +662,26 @@ export const CMSProvider = ({ children }) => {
           map_embed_url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.6738953155383!2d78.1477182!3d12.1249857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bac170506314ba5%3A0x3c4e65185c03533!2sNIDARSANAM%20HEALTH%20CARE!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin'
         }
       };
+    }
+
+    if (updated?.home?.hero) {
+      if (
+        !updated.home.hero.hero_image ||
+        updated.home.hero.hero_image.includes('unsplash') ||
+        updated.home.hero.hero_image.includes('HEIC') ||
+        updated.home.hero.hero_image === 'home-hero.HEIC'
+      ) {
+        updated = {
+          ...updated,
+          home: {
+            ...updated.home,
+            hero: {
+              ...updated.home.hero,
+              hero_image: '/home-hero.jpg'
+            }
+          }
+        };
+      }
     }
 
     if (updated?.home?.method?.heading && updated.home.method.heading.includes('different')) {
