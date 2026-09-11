@@ -8,13 +8,17 @@ import About from './pages/About/About';
 import Blog from './pages/Blog/Blog';
 import Contact from './pages/Contact/Contact';
 import NotFound from './pages/NotFound/NotFound';
+import PrivacyPolicy from './pages/Legal/PrivacyPolicy';
+import TermsOfService from './pages/Legal/TermsOfService';
 import AdminLogin from './pages/Admin/AdminLogin';
 import AdminLayout from './pages/Admin/AdminLayout';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import AdminLeads from './pages/Admin/AdminLeads';
 import AdminCMS from './pages/Admin/AdminCMS';
 import AdminBlogs from './pages/Admin/AdminBlogs';
+import AdminSettings from './pages/Admin/AdminSettings';
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
+import CookieConsent from './components/CookieConsent/CookieConsent';
 import './App.css';
 
 // Public Layout Wrapper with Navbar and Footer
@@ -27,6 +31,7 @@ const PublicLayout = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <CookieConsent />
     </div>
   );
 };
@@ -63,6 +68,8 @@ function App() {
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<Blog />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="*" element={<NotFound />} />
             </Route>
 
@@ -76,6 +83,7 @@ function App() {
               <Route path="leads" element={<AdminLeads />} />
               <Route path="cms" element={<AdminCMS />} />
               <Route path="blogs" element={<AdminBlogs />} />
+              <Route path="settings" element={<AdminSettings />} />
             </Route>
           </Routes>
         </Router>

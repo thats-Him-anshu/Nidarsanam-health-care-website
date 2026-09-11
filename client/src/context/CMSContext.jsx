@@ -370,24 +370,21 @@ const DEFAULT_CONTENT = {
   }
 };
 
-// Initial Categories
+// Categories (static list used for dropdowns)
 const DEFAULT_CATEGORIES = [
-  { id: 'cat_1', name: 'Traditional Indian Food', slug: 'traditional-indian-food', count: 0, icon: '🌾' },
-  { id: 'cat_2', name: 'Nutrition', slug: 'nutrition', count: 0, icon: '🥗' },
-  { id: 'cat_3', name: 'Yoga', slug: 'yoga', count: 0, icon: '🧘' },
-  { id: 'cat_4', name: 'Lifestyle', slug: 'lifestyle', count: 0, icon: '☀️' },
-  { id: 'cat_5', name: 'Naturopathy', slug: 'naturopathy', count: 0, icon: '🌿' },
-  { id: 'cat_6', name: 'Panchamahabhuta', slug: 'panchamahabhuta', count: 0, icon: '🌌' },
-  { id: 'cat_7', name: 'Women\'s Health', slug: 'womens-health', count: 0, icon: '🌸' },
-  { id: 'cat_8', name: 'Metabolic Health', slug: 'metabolic-health', count: 0, icon: '⚡' },
-  { id: 'cat_9', name: 'Healthy Living', slug: 'healthy-living', count: 0, icon: '🌱' }
+  { id: 'cat_1', name: 'Traditional Indian Food', slug: 'traditional-indian-food', icon: '🌾' },
+  { id: 'cat_2', name: 'Nutrition', slug: 'nutrition', icon: '🥗' },
+  { id: 'cat_3', name: 'Yoga', slug: 'yoga', icon: '🧘' },
+  { id: 'cat_4', name: 'Lifestyle', slug: 'lifestyle', icon: '☀️' },
+  { id: 'cat_5', name: 'Naturopathy', slug: 'naturopathy', icon: '🌿' },
+  { id: 'cat_6', name: 'Panchamahabhuta', slug: 'panchamahabhuta', icon: '🌌' },
+  { id: 'cat_7', name: "Women's Health", slug: 'womens-health', icon: '🌸' },
+  { id: 'cat_8', name: 'Metabolic Health', slug: 'metabolic-health', icon: '⚡' },
+  { id: 'cat_9', name: 'Healthy Living', slug: 'healthy-living', icon: '🌱' }
 ];
 
-// Initial Blogs (starts empty; create and manage blogs via Admin CMS)
-const DEFAULT_BLOGS = [];
-
-// Initial Sample Leads
-const DEFAULT_LEADS = [
+// (Leads and Blogs are now managed directly via the backend API — no localStorage fallback)
+const _PLACEHOLDER = [
   {
     _id: 'lead_1',
     name: 'Raj Kumar',
@@ -787,196 +784,33 @@ export const CMSProvider = ({ children }) => {
     }
   }, [content]);
 
-  // Blogs
-  const [blogs, setBlogs] = useState(() => {
-    const saved = localStorage.getItem('nidarsanam_blogs');
-    if (!saved) return DEFAULT_BLOGS;
-    try {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed)) {
-        // Automatically filter out legacy sample dummy articles
-        const cleaned = parsed.filter(b => !['blog_1', 'blog_2', 'blog_3', 'blog_4'].includes(b._id));
-        if (cleaned.length !== parsed.length) {
-          localStorage.setItem('nidarsanam_blogs', JSON.stringify(cleaned));
-        }
-        return cleaned;
-      }
-      return DEFAULT_BLOGS;
-    } catch {
-      return DEFAULT_BLOGS;
-    }
-  });
+  // Categories (static — used for blog category dropdowns)
+  const categories = DEFAULT_CATEGORIES;
 
-  // Categories
-  const [categories, setCategories] = useState(() => {
-    const saved = localStorage.getItem('nidarsanam_categories');
-    return saved ? JSON.parse(saved) : DEFAULT_CATEGORIES;
-  });
-
-  // Leads
-  const [leads, setLeads] = useState(() => {
-    const saved = localStorage.getItem('nidarsanam_leads');
-    return saved ? JSON.parse(saved) : DEFAULT_LEADS;
-  });
-
-  // Subscribers
-  const [subscribers, setSubscribers] = useState(() => {
-    const saved = localStorage.getItem('nidarsanam_subscribers');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  // Save to localStorage
+  // Save content to localStorage
   useEffect(() => {
     localStorage.setItem('nidarsanam_content', JSON.stringify(content));
   }, [content]);
 
-  useEffect(() => {
-    localStorage.setItem('nidarsanam_blogs', JSON.stringify(blogs));
-  }, [blogs]);
-
-  useEffect(() => {
-    localStorage.setItem('nidarsanam_categories', JSON.stringify(categories));
-  }, [categories]);
-
-  useEffect(() => {
-    localStorage.setItem('nidarsanam_leads', JSON.stringify(leads));
-  }, [leads]);
-
-  useEffect(() => {
-    localStorage.setItem('nidarsanam_subscribers', JSON.stringify(subscribers));
-  }, [subscribers]);
-
-  // Lead Actions
+  // ── Lead Submission (from public contact form → goes directly to API) ──
   const submitLead = async (leadData) => {
-    const newLead = {
-      _id: 'lead_' + Date.now(),
-      ...leadData,
-      source: leadData.source || 'Website Appointment Form',
-      status: 'New',
-      created_at: new Date().toISOString(),
-      notes: [
-        {
-          _id: 'note_' + Date.now(),
-          note: `Appointment requested for ${leadData.preferred_date || 'TBD'} at ${leadData.preferred_time || 'TBD'}.`,
-          created_at: new Date().toISOString(),
-          created_by_name: 'Website System'
-        }
-      ],
-      follow_ups: []
-    };
-
-    // Try backend if available
     try {
-      await api.post('/v1/leads', leadData);
+      const res = await api.post('/v1/leads', leadData);
+      return {
+        success: true,
+        lead_id: res.data?.lead_id,
+        confirmation_message: res.data?.confirmation_message || content?.contact?.form_settings?.success_message || 'Thank you! We will contact you shortly.'
+      };
     } catch (e) {
-      console.log('Saved lead to local state:', e.message);
+      console.error('Failed to submit lead:', e.message);
+      return {
+        success: false,
+        confirmation_message: 'There was a problem submitting your request. Please call us directly or try again.'
+      };
     }
-
-    setLeads((prev) => [newLead, ...prev]);
-    return {
-      success: true,
-      lead_id: newLead._id,
-      confirmation_message: content.contact.form_settings.success_message
-    };
   };
 
-  const updateLeadStatus = (leadId, newStatus) => {
-    setLeads((prev) =>
-      prev.map((l) =>
-        l._id === leadId
-          ? {
-            ...l,
-            status: newStatus,
-            updated_at: new Date().toISOString(),
-            notes: [
-              ...(l.notes || []),
-              {
-                _id: 'note_' + Date.now(),
-                note: `Status updated to "${newStatus}"`,
-                created_at: new Date().toISOString(),
-                created_by_name: 'Admin'
-              }
-            ]
-          }
-          : l
-      )
-    );
-  };
 
-  const addLeadNote = (leadId, noteText, author = 'Admin') => {
-    if (!noteText.trim()) return;
-    setLeads((prev) =>
-      prev.map((l) =>
-        l._id === leadId
-          ? {
-            ...l,
-            notes: [
-              ...(l.notes || []),
-              {
-                _id: 'note_' + Date.now(),
-                note: noteText.trim(),
-                created_at: new Date().toISOString(),
-                created_by_name: author
-              }
-            ]
-          }
-          : l
-      )
-    );
-  };
-
-  const addLeadFollowUp = (leadId, followUpData) => {
-    setLeads((prev) =>
-      prev.map((l) =>
-        l._id === leadId
-          ? {
-            ...l,
-            follow_ups: [
-              ...(l.follow_ups || []),
-              {
-                _id: 'fu_' + Date.now(),
-                ...followUpData,
-                status: 'Pending',
-                created_at: new Date().toISOString()
-              }
-            ]
-          }
-          : l
-      )
-    );
-  };
-
-  const deleteLead = (leadId) => {
-    setLeads((prev) => prev.filter((l) => l._id !== leadId));
-  };
-
-  const exportLeadsCSV = () => {
-    const headers = ['ID', 'Name', 'Age', 'Phone', 'Email', 'City', 'Health Concern', 'Consultation Type', 'Preferred Date', 'Preferred Time', 'Status', 'Source', 'Created Date'];
-    const rows = leads.map((l) => [
-      l._id,
-      `"${l.name || ''}"`,
-      l.age || '',
-      `"${l.phone || ''}"`,
-      `"${l.email || ''}"`,
-      `"${l.city || ''}"`,
-      `"${(l.health_concern || '').replace(/"/g, '""')}"`,
-      l.consultation_type || 'Online',
-      l.preferred_date || '',
-      l.preferred_time || '',
-      l.status || 'New',
-      l.source || 'Website',
-      l.created_at || ''
-    ]);
-
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `nidarsanam_leads_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   // CMS Content Updates
   const updateSectionContent = (page, section, newSectionData) => {
@@ -999,82 +833,24 @@ export const CMSProvider = ({ children }) => {
     }));
   };
 
-  // Blog Actions
-  const addBlog = (blogData) => {
-    const slug = (blogData.slug || blogData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
-    const wordCount = (blogData.content || '').replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-    const readingTime = Math.max(1, Math.ceil(wordCount / 200));
-
-    const newBlog = {
-      _id: 'blog_' + Date.now(),
-      ...blogData,
-      slug,
-      reading_time_minutes: readingTime,
-      view_count: 0,
-      published_at: blogData.status === 'Published' ? new Date().toISOString().slice(0, 10) : null,
-      created_at: new Date().toISOString()
-    };
-
-    setBlogs((prev) => [newBlog, ...prev]);
-    return newBlog;
-  };
-
-  const updateBlog = (blogId, updatedFields) => {
-    setBlogs((prev) =>
-      prev.map((b) =>
-        b._id === blogId
-          ? {
-            ...b,
-            ...updatedFields,
-            updated_at: new Date().toISOString()
-          }
-          : b
-      )
-    );
-  };
-
-  const deleteBlog = (blogId) => {
-    setBlogs((prev) => prev.filter((b) => b._id !== blogId));
-  };
-
-  const incrementBlogView = (slug) => {
-    setBlogs((prev) =>
-      prev.map((b) => (b.slug === slug ? { ...b, view_count: (b.view_count || 0) + 1 } : b))
-    );
-  };
-
-  // Newsletter subscription
-  const subscribeNewsletter = (name, email) => {
-    const newSubscriber = {
-      _id: 'sub_' + Date.now(),
-      name,
-      email,
-      subscribed_at: new Date().toISOString()
-    };
-    setSubscribers((prev) => [newSubscriber, ...prev]);
-    return { success: true, message: 'Thank you for subscribing to The Nidarsanam Journal!' };
+  // Newsletter subscription (calls backend API)
+  const subscribeNewsletter = async (name, email) => {
+    try {
+      await api.post('/v1/public/newsletter', { name, email });
+      return { success: true, message: 'Thank you for subscribing to The Nidarsanam Journal!' };
+    } catch (e) {
+      return { success: false, message: 'Failed to subscribe. Please try again.' };
+    }
   };
 
   return (
     <CMSContext.Provider
       value={{
         content,
-        blogs,
         categories,
-        leads,
-        subscribers,
         submitLead,
-        updateLeadStatus,
-        addLeadNote,
-        addLeadFollowUp,
-        deleteLead,
-        exportLeadsCSV,
         updateSectionContent,
         updateGlobalSettings,
-        addBlog,
-        updateBlog,
-        deleteBlog,
-        incrementBlogView,
         subscribeNewsletter
       }}
     >

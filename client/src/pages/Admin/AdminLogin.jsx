@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Shield, Lock, Mail, ArrowRight, AlertCircle, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Shield, Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState('admin@nidarsanam.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { login, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -20,18 +20,17 @@ const AdminLogin = () => {
     e.preventDefault();
     setError('');
 
+    if (!email.trim() || !password) {
+      setError('Please enter your email and password.');
+      return;
+    }
+
     const res = await login(email, password);
     if (res.success) {
       navigate('/admin/dashboard');
     } else {
-      setError(res.message || 'Invalid credentials');
+      setError(res.message || 'Invalid credentials. Please try again.');
     }
-  };
-
-  const fillDemoCredentials = () => {
-    setEmail('admin@nidarsanam.com');
-    setPassword('admin123');
-    setError('');
   };
 
   return (
@@ -53,20 +52,8 @@ const AdminLogin = () => {
               <span className="admin-brand-tagline">HEALTHCARE CMS</span>
             </div>
           </Link>
-          <h2 className="admin-login-heading">Clinical & Content Portal</h2>
+          <h2 className="admin-login-heading">Clinical &amp; Content Portal</h2>
           <p className="admin-login-sub">Secure access for clinic administrators and physicians</p>
-        </div>
-
-        {/* Demo Credentials Helper Box */}
-        <div className="admin-demo-box" onClick={fillDemoCredentials} role="button" tabIndex={0}>
-          <div className="demo-box-header">
-            <Sparkles size={16} className="demo-sparkle" />
-            <strong>Demo Credentials (Click to Auto-fill):</strong>
-          </div>
-          <div className="demo-credentials-text">
-            <span>Email: <code>admin@nidarsanam.com</code></span>
-            <span>Password: <code>admin123</code></span>
-          </div>
         </div>
 
         {/* Error Alert */}
@@ -77,10 +64,10 @@ const AdminLogin = () => {
           </div>
         )}
 
-        {/* Form */}
+        {/* Login Form */}
         <form onSubmit={handleSubmit} className="admin-login-form">
           <div className="admin-form-group">
-            <label className="admin-form-label">Email or Username</label>
+            <label className="admin-form-label">Email</label>
             <div className="admin-input-wrap">
               <Mail size={18} className="admin-input-icon" />
               <input
@@ -90,6 +77,7 @@ const AdminLogin = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@nidarsanam.com"
                 className="admin-form-input"
+                autoComplete="username"
               />
             </div>
           </div>
@@ -105,6 +93,7 @@ const AdminLogin = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="admin-form-input"
+                autoComplete="current-password"
               />
             </div>
           </div>

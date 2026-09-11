@@ -188,21 +188,13 @@ const Footer = () => {
             © {currentYear} Nidarsanam Healthcare. All rights reserved. Dr. Nidarsin (BNYS).
           </div>
           <div className="footer-legal-links">
-            <button
-              type="button"
-              className="footer-legal-btn"
-              onClick={() => setLegalModalType('privacy')}
-            >
+            <Link to="/privacy-policy" className="footer-legal-btn">
               Privacy Policy
-            </button>
+            </Link>
             <span className="footer-dot">•</span>
-            <button
-              type="button"
-              className="footer-legal-btn"
-              onClick={() => setLegalModalType('terms')}
-            >
-              Terms & Conditions
-            </button>
+            <Link to="/terms-of-service" className="footer-legal-btn">
+              Terms of Service
+            </Link>
           </div>
         </div>
       </div>

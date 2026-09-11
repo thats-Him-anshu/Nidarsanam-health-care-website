@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Clock,
   Calendar,
@@ -6,15 +6,36 @@ import {
   Sparkles,
   Mail,
   CheckCircle2,
-  BookOpen
+  BookOpen,
+  RefreshCw
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import ArticleModal from '../../components/ArticleModal';
+import api from '../../services/api';
 import './Blog.css';
 
 const Blog = () => {
-  const { content, blogs, subscribeNewsletter, incrementBlogView } = useCMS();
+  const { content, subscribeNewsletter } = useCMS();
   const [activeArticle, setActiveArticle] = useState(null);
+  const [blogs, setBlogs] = useState([]);
+  const [blogsLoading, setBlogsLoading] = useState(true);
+
+  // Fetch published blogs from API on mount
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      setBlogsLoading(true);
+      try {
+        const res = await api.get('/v1/public/blogs');
+        setBlogs(res.data.blogs || []);
+      } catch (err) {
+        console.error('Failed to fetch blogs:', err.message);
+        setBlogs([]);
+      } finally {
+        setBlogsLoading(false);
+      }
+    };
+    fetchBlogs();
+  }, []);
 
   // Newsletter State
   const [subName, setSubName] = useState('');
@@ -24,7 +45,7 @@ const Blog = () => {
   const blogHero = content?.blog?.hero || {};
   const newsletter = content?.blog?.newsletter || {};
 
-  // Filter published blogs
+  // All published blogs (already filtered by API, but keep local filter as safety)
   const publishedBlogs = useMemo(() => {
     return blogs.filter((b) => b.status === 'Published');
   }, [blogs]);
@@ -36,13 +57,13 @@ const Blog = () => {
 
   const handleOpenArticle = (article) => {
     setActiveArticle(article);
-    incrementBlogView(article.slug);
+    // View count is automatically incremented by the backend GET /api/v1/public/blogs/:slug endpoint
   };
 
-  const handleNewsletterSubmit = (e) => {
+  const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
     if (!subEmail) return;
-    subscribeNewsletter(subName, subEmail);
+    await subscribeNewsletter(subName, subEmail);
     setSubSuccess(true);
     setSubName('');
     setSubEmail('');

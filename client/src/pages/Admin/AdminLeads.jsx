@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   Search,
@@ -19,24 +19,21 @@ import {
   FileText,
   AlertCircle,
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  RefreshCw
 } from 'lucide-react';
-import { useCMS } from '../../context/CMSContext';
 import { useAuth } from '../../context/AuthContext';
+import api from '../../services/api';
 import './AdminLeads.css';
 
 const AdminLeads = () => {
-  const {
-    leads,
-    submitLead,
-    updateLeadStatus,
-    addLeadNote,
-    addLeadFollowUp,
-    deleteLead,
-    exportLeadsCSV
-  } = useCMS();
   const { admin } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // API State
+  const [leads, setLeads] = useState([]);
+  const [loadingLeads, setLoadingLeads] = useState(true);
+  const [apiError, setApiError] = useState('');
 
   // Search & Filters State
   const [searchQuery, setSearchQuery] = useState('');
@@ -69,11 +66,28 @@ const AdminLeads = () => {
     source: 'Admin Manual Entry'
   });
 
-  // Query parameter handling (e.g. ?leadId=lead_1 or ?action=new)
+  // Fetch leads from API
+  const fetchLeads = useCallback(async () => {
+    setLoadingLeads(true);
+    setApiError('');
+    try {
+      const res = await api.get('/v1/leads');
+      setLeads(res.data.leads || []);
+    } catch (err) {
+      setApiError(err.response?.data?.message || 'Failed to load leads. Is the backend running?');
+    } finally {
+      setLoadingLeads(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchLeads();
+  }, [fetchLeads]);
+
+  // Query parameter handling
   useEffect(() => {
     const leadId = searchParams.get('leadId');
     const action = searchParams.get('action');
-
     if (leadId) {
       const found = leads.find((l) => l._id === leadId);
       if (found) setActiveLead(found);
@@ -113,50 +127,115 @@ const AdminLeads = () => {
     }
   };
 
-  // Add Note Handler
-  const handleAddNote = (e) => {
+  // Update lead status via API
+  const handleUpdateStatus = async (leadId, newStatus) => {
+    try {
+      const res = await api.patch(`/v1/leads/${leadId}/status`, { status: newStatus });
+      const updated = res.data.lead;
+      setLeads((prev) => prev.map((l) => l._id === leadId ? updated : l));
+      if (activeLead?._id === leadId) setActiveLead(updated);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to update status');
+    }
+  };
+
+  // Add note via API
+  const handleAddNote = async (e) => {
     e.preventDefault();
     if (!newNoteText.trim() || !activeLead) return;
-    addLeadNote(activeLead._id, newNoteText, admin?.name || 'Dr. Nidarsin');
-    setNewNoteText('');
-    // refresh activeLead from updated list
-    const updated = leads.find((l) => l._id === activeLead._id);
-    if (updated) setActiveLead(updated);
+    try {
+      const res = await api.post(`/v1/leads/${activeLead._id}/notes`, { note: newNoteText });
+      const updated = res.data.lead;
+      setLeads((prev) => prev.map((l) => l._id === activeLead._id ? updated : l));
+      setActiveLead(updated);
+      setNewNoteText('');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to add note');
+    }
   };
 
-  // Schedule Follow-Up Handler
-  const handleScheduleFollowUp = (e) => {
+  // Schedule Follow-Up (local for now, stored in note)
+  const handleScheduleFollowUp = async (e) => {
     e.preventDefault();
     if (!fuDate || !activeLead) return;
-    addLeadFollowUp(activeLead._id, {
-      follow_up_date: fuDate,
-      follow_up_time: fuTime,
-      note: fuNote
-    });
-    setFuDate('');
-    setFuNote('');
-    setShowFollowUpForm(false);
+    const noteText = `Follow-up scheduled: ${fuDate} at ${fuTime}${fuNote ? '. Note: ' + fuNote : ''}`;
+    try {
+      const res = await api.post(`/v1/leads/${activeLead._id}/notes`, { note: noteText });
+      const updated = res.data.lead;
+      setLeads((prev) => prev.map((l) => l._id === activeLead._id ? updated : l));
+      setActiveLead(updated);
+      setFuDate('');
+      setFuNote('');
+      setShowFollowUpForm(false);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to schedule follow-up');
+    }
   };
 
-  // Handle Manual Lead Create
+  // Delete lead via API
+  const handleDeleteLead = async (leadId) => {
+    if (!window.confirm('Delete this lead? This cannot be undone.')) return;
+    try {
+      await api.delete(`/v1/leads/${leadId}`);
+      setLeads((prev) => prev.filter((l) => l._id !== leadId));
+      if (activeLead?._id === leadId) setActiveLead(null);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete lead');
+    }
+  };
+
+  // Export CSV
+  const exportLeadsCSV = () => {
+    const headers = ['ID', 'Name', 'Age', 'Phone', 'Email', 'City', 'Health Concern', 'Consultation Type', 'Preferred Date', 'Preferred Time', 'Status', 'Source', 'Created Date'];
+    const rows = filteredLeads.map((l) => [
+      l._id,
+      `"${l.name || ''}"`,
+      l.age || '',
+      `"${l.phone || ''}"`,
+      `"${l.email || ''}"`,
+      `"${l.city || ''}"`,
+      `"${(l.health_concern || '').replace(/"/g, '""')}"`,
+      l.consultation_type || 'Online',
+      l.preferred_date || '',
+      l.preferred_time || '',
+      l.status || 'New',
+      l.source || 'Website',
+      l.created_at || ''
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `nidarsanam_leads_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Handle Manual Lead Create (via public form API)
   const handleCreateManualLead = async (e) => {
     e.preventDefault();
     if (!newLeadForm.name || !newLeadForm.phone) return;
-    await submitLead(newLeadForm);
-    setShowNewLeadModal(false);
-    setNewLeadForm({
-      name: '',
-      age: '',
-      phone: '',
-      email: '',
-      city: '',
-      consultation_type: 'Online',
-      health_concern: 'Type 2 Diabetes',
-      preferred_date: '',
-      preferred_time: '10:00 AM',
-      additional_message: '',
-      source: 'Admin Manual Entry'
-    });
+    try {
+      const res = await api.post('/v1/leads', { ...newLeadForm, source: 'Admin Manual Entry' });
+      await fetchLeads(); // refresh list from DB
+      setShowNewLeadModal(false);
+      setNewLeadForm({
+        name: '',
+        age: '',
+        phone: '',
+        email: '',
+        city: '',
+        consultation_type: 'Online',
+        health_concern: 'Type 2 Diabetes',
+        preferred_date: '',
+        preferred_time: '10:00 AM',
+        additional_message: '',
+        source: 'Admin Manual Entry'
+      });
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to create lead');
+    }
   };
 
   return (
@@ -543,12 +622,7 @@ const AdminLeads = () => {
               <div className="lead-danger-zone">
                 <button
                   className="btn-delete-lead"
-                  onClick={() => {
-                    if (window.confirm(`Are you sure you want to delete the lead record for ${activeLead.name}?`)) {
-                      deleteLead(activeLead._id);
-                      setActiveLead(null);
-                    }
-                  }}
+                  onClick={() => handleDeleteLead(activeLead._id)}
                 >
                   <Trash2 size={16} />
                   <span>Delete This Lead Record</span>

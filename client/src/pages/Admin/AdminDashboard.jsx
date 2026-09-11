@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Users,
@@ -8,19 +8,39 @@ import {
   Download,
   Plus,
   ArrowRight,
-  TrendingUp,
   PieChart,
-  Calendar,
-  Globe,
-  MessageCircle,
-  Eye
+  Eye,
+  RefreshCw,
+  AlertCircle
 } from 'lucide-react';
-import { useCMS } from '../../context/CMSContext';
+import api from '../../services/api';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
-  const { leads, blogs, exportLeadsCSV } = useCMS();
-  const [timeframe, setTimeframe] = useState('weekly');
+  const [leads, setLeads] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const [leadsRes, blogsRes] = await Promise.all([
+          api.get('/v1/leads'),
+          api.get('/v1/admin/blogs')
+        ]);
+        setLeads(leadsRes.data.leads || []);
+        setBlogs(blogsRes.data.blogs || []);
+      } catch (err) {
+        setError(err.response?.data?.message || 'Could not connect to the backend. Please start the server.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   // KPI Calculations
   const totalLeads = leads.length;
@@ -46,6 +66,24 @@ const AdminDashboard = () => {
     }
   };
 
+  // Export CSV of leads
+  const exportLeadsCSV = () => {
+    const headers = ['ID', 'Name', 'Age', 'Phone', 'Email', 'City', 'Health Concern', 'Consultation Type', 'Preferred Date', 'Status', 'Source', 'Created Date'];
+    const rows = leads.map((l) => [
+      l._id, `"${l.name || ''}"`, l.age || '', `"${l.phone || ''}"`, `"${l.email || ''}"`,
+      `"${l.city || ''}"`, `"${(l.health_concern || '').replace(/"/g, '""')}"`,
+      l.consultation_type || 'Online', l.preferred_date || '', l.status || 'New',
+      l.source || 'Website', l.created_at || ''
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+    const link = document.createElement('a');
+    link.setAttribute('href', encodeURI(csvContent));
+    link.setAttribute('download', `nidarsanam_leads_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="admin-dashboard-root">
       {/* Top Welcome Header */}
@@ -58,7 +96,7 @@ const AdminDashboard = () => {
           </p>
         </div>
         <div className="dashboard-header-actions">
-          <button onClick={exportLeadsCSV} className="btn btn-secondary btn-sm">
+          <button onClick={exportLeadsCSV} className="btn btn-secondary btn-sm" disabled={loading}>
             <Download size={16} />
             <span>Export CSV</span>
           </button>
@@ -69,6 +107,14 @@ const AdminDashboard = () => {
         </div>
       </div>
 
+      {/* Connection Error Banner */}
+      {error && (
+        <div className="admin-alert admin-alert-error" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <AlertCircle size={18} />
+          <span>{error}</span>
+        </div>
+      )}
+
       {/* 4 SUMMARY KPI CARDS */}
       <div className="kpi-grid">
         <div className="kpi-card card">
@@ -77,7 +123,7 @@ const AdminDashboard = () => {
           </div>
           <div className="kpi-info">
             <span className="kpi-label">TOTAL LEADS</span>
-            <strong className="kpi-number">{totalLeads}</strong>
+            <strong className="kpi-number">{loading ? '—' : totalLeads}</strong>
             <span className="kpi-sub">All patient inquiries</span>
           </div>
         </div>
@@ -88,7 +134,7 @@ const AdminDashboard = () => {
           </div>
           <div className="kpi-info">
             <span className="kpi-label">NEW LEADS</span>
-            <strong className="kpi-number">{newLeads}</strong>
+            <strong className="kpi-number">{loading ? '—' : newLeads}</strong>
             <span className="kpi-sub">Awaiting confirmation</span>
           </div>
         </div>
@@ -99,7 +145,7 @@ const AdminDashboard = () => {
           </div>
           <div className="kpi-info">
             <span className="kpi-label">IN PROGRESS</span>
-            <strong className="kpi-number">{contactedLeads}</strong>
+            <strong className="kpi-number">{loading ? '—' : contactedLeads}</strong>
             <span className="kpi-sub">Contacted / Follow-up</span>
           </div>
         </div>
@@ -110,7 +156,7 @@ const AdminDashboard = () => {
           </div>
           <div className="kpi-info">
             <span className="kpi-label">PUBLISHED BLOGS</span>
-            <strong className="kpi-number">{publishedBlogs}</strong>
+            <strong className="kpi-number">{loading ? '—' : publishedBlogs}</strong>
             <span className="kpi-sub">In Nidarsanam Journal</span>
           </div>
         </div>
@@ -118,66 +164,35 @@ const AdminDashboard = () => {
 
       {/* CHARTS & ANALYTICS ROW */}
       <div className="analytics-grid">
-        {/* Lead Trends Bar Chart */}
+        {/* Lead Trends placeholder */}
         <div className="card analytics-card">
           <div className="analytics-card-header">
             <div>
-              <h3 className="analytics-title">Leads Received Trends</h3>
-              <p className="analytics-sub">Inbound appointment volume</p>
-            </div>
-            <div className="chart-toggle-group">
-              <button
-                className={`chart-toggle-btn ${timeframe === 'daily' ? 'active' : ''}`}
-                onClick={() => setTimeframe('daily')}
-              >
-                Daily
-              </button>
-              <button
-                className={`chart-toggle-btn ${timeframe === 'weekly' ? 'active' : ''}`}
-                onClick={() => setTimeframe('weekly')}
-              >
-                Weekly
-              </button>
-              <button
-                className={`chart-toggle-btn ${timeframe === 'monthly' ? 'active' : ''}`}
-                onClick={() => setTimeframe('monthly')}
-              >
-                Monthly
-              </button>
+              <h3 className="analytics-title">Lead Status Overview</h3>
+              <p className="analytics-sub">Current pipeline at a glance</p>
             </div>
           </div>
 
-          {/* Dynamic Mocked Trend Visual */}
-          <div className="chart-bars-container">
-            <div className="chart-bar-col">
-              <div className="bar-track"><div className="bar-fill" style={{ height: '45%' }} /></div>
-              <span className="bar-label">Mon</span>
+          {loading ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', color: 'var(--nid-stone)' }}>
+              <RefreshCw size={20} style={{ animation: 'spin 1s linear infinite', marginRight: '0.5rem' }} />
+              Loading...
             </div>
-            <div className="chart-bar-col">
-              <div className="bar-track"><div className="bar-fill" style={{ height: '65%' }} /></div>
-              <span className="bar-label">Tue</span>
+          ) : (
+            <div className="chart-bars-container">
+              {['New', 'Contacted', 'Follow-up', 'Converted', 'Closed'].map((status, idx) => {
+                const count = leads.filter((l) => l.status === status).length;
+                const pct = totalLeads > 0 ? Math.round((count / totalLeads) * 100) : 0;
+                return (
+                  <div key={status} className="chart-bar-col">
+                    <div className="bar-track"><div className="bar-fill" style={{ height: `${Math.max(4, pct)}%` }} /></div>
+                    <span className="bar-label">{status.split('-')[0]}</span>
+                    <span className="bar-label" style={{ fontWeight: 700 }}>{count}</span>
+                  </div>
+                );
+              })}
             </div>
-            <div className="chart-bar-col">
-              <div className="bar-track"><div className="bar-fill" style={{ height: '80%' }} /></div>
-              <span className="bar-label">Wed</span>
-            </div>
-            <div className="chart-bar-col">
-              <div className="bar-track"><div className="bar-fill" style={{ height: '55%' }} /></div>
-              <span className="bar-label">Thu</span>
-            </div>
-            <div className="chart-bar-col">
-              <div className="bar-track"><div className="bar-fill" style={{ height: '90%' }} /></div>
-              <span className="bar-label">Fri</span>
-            </div>
-            <div className="chart-bar-col">
-              <div className="bar-track"><div className="bar-fill" style={{ height: '70%' }} /></div>
-              <span className="bar-label">Sat</span>
-            </div>
-            <div className="chart-bar-col">
-              <div className="bar-track"><div className="bar-fill" style={{ height: '35%' }} /></div>
-              <span className="bar-label">Sun</span>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Source Breakdown */}
@@ -190,28 +205,39 @@ const AdminDashboard = () => {
             <PieChart size={18} className="analytics-header-icon" />
           </div>
 
-          <div className="source-list">
-            {Object.entries(sourceBreakdown).map(([sourceName, count], idx) => {
-              const pct = Math.round((count / totalLeads) * 100) || 0;
-              return (
-                <div key={idx} className="source-item">
-                  <div className="source-item-header">
-                    <span className="source-name">{sourceName}</span>
-                    <strong className="source-count">{count} leads ({pct}%)</strong>
+          {loading ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', color: 'var(--nid-stone)' }}>
+              <RefreshCw size={20} style={{ animation: 'spin 1s linear infinite', marginRight: '0.5rem' }} />
+              Loading...
+            </div>
+          ) : Object.keys(sourceBreakdown).length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--nid-stone)', fontSize: '0.875rem' }}>
+              No lead data yet. Submissions from your website will appear here.
+            </div>
+          ) : (
+            <div className="source-list">
+              {Object.entries(sourceBreakdown).map(([sourceName, count], idx) => {
+                const pct = Math.round((count / totalLeads) * 100) || 0;
+                return (
+                  <div key={idx} className="source-item">
+                    <div className="source-item-header">
+                      <span className="source-name">{sourceName}</span>
+                      <strong className="source-count">{count} leads ({pct}%)</strong>
+                    </div>
+                    <div className="source-bar-track">
+                      <div
+                        className="source-bar-fill"
+                        style={{
+                          width: `${pct}%`,
+                          backgroundColor: idx === 0 ? 'var(--nid-forest)' : idx === 1 ? 'var(--nid-gold)' : 'var(--nid-brown)'
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="source-bar-track">
-                    <div
-                      className="source-bar-fill"
-                      style={{
-                        width: `${pct}%`,
-                        backgroundColor: idx === 0 ? 'var(--nid-forest)' : idx === 1 ? 'var(--nid-gold)' : 'var(--nid-brown)'
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
 
@@ -220,7 +246,9 @@ const AdminDashboard = () => {
         <div className="table-card-header">
           <div>
             <h3 className="table-title">Latest Consultation Inquiries</h3>
-            <p className="table-subtitle">Showing recent patient submissions</p>
+            <p className="table-subtitle">
+              {loading ? 'Loading from database...' : `Showing ${Math.min(leads.length, 5)} of ${totalLeads} total leads`}
+            </p>
           </div>
           <Link to="/admin/leads" className="btn btn-secondary btn-sm">
             <span>View All Leads</span>
@@ -242,40 +270,57 @@ const AdminDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {leads.slice(0, 5).map((lead) => (
-                <tr key={lead._id}>
-                  <td>
-                    <strong>{lead.name}</strong>
-                    {lead.city && <span className="cell-sub">{lead.city}</span>}
-                  </td>
-                  <td>
-                    <a href={`tel:${lead.phone}`} className="table-phone-link">
-                      {lead.phone}
-                    </a>
-                  </td>
-                  <td>
-                    <span className="concern-tag">{lead.health_concern}</span>
-                  </td>
-                  <td>
-                    <span className="consult-type-badge">{lead.consultation_type || 'Online'}</span>
-                  </td>
-                  <td>
-                    <span>{lead.preferred_date || 'Flexible'}</span>
-                    <span className="cell-sub">{lead.preferred_time}</span>
-                  </td>
-                  <td>
-                    <span className={`status-badge ${getStatusBadgeClass(lead.status)}`}>
-                      {lead.status}
-                    </span>
-                  </td>
-                  <td>
-                    <Link to={`/admin/leads?leadId=${lead._id}`} className="btn-table-action">
-                      <Eye size={16} />
-                      <span>Details</span>
-                    </Link>
+              {loading ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '2rem', color: 'var(--nid-stone)' }}>
+                    Loading leads from database...
                   </td>
                 </tr>
-              ))}
+              ) : leads.length === 0 ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '2.5rem', color: 'var(--nid-stone)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                      <Users size={28} style={{ opacity: 0.4 }} />
+                      <span>No leads yet. Patient appointments submitted via your website will appear here.</span>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                leads.slice(0, 5).map((lead) => (
+                  <tr key={lead._id}>
+                    <td>
+                      <strong>{lead.name}</strong>
+                      {lead.city && <span className="cell-sub">{lead.city}</span>}
+                    </td>
+                    <td>
+                      <a href={`tel:${lead.phone}`} className="table-phone-link">
+                        {lead.phone}
+                      </a>
+                    </td>
+                    <td>
+                      <span className="concern-tag">{lead.health_concern}</span>
+                    </td>
+                    <td>
+                      <span className="consult-type-badge">{lead.consultation_type || 'Online'}</span>
+                    </td>
+                    <td>
+                      <span>{lead.preferred_date || 'Flexible'}</span>
+                      <span className="cell-sub">{lead.preferred_time}</span>
+                    </td>
+                    <td>
+                      <span className={`status-badge ${getStatusBadgeClass(lead.status)}`}>
+                        {lead.status}
+                      </span>
+                    </td>
+                    <td>
+                      <Link to={`/admin/leads?leadId=${lead._id}`} className="btn-table-action">
+                        <Eye size={16} />
+                        <span>Details</span>
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   Search,
   Plus,
@@ -9,20 +9,27 @@ import {
   Calendar,
   Clock,
   Sparkles,
-  CheckCircle2,
   X,
-  Tag,
-  Share2,
-  ArrowRight,
-  Globe,
-  FileText
+  FileText,
+  RefreshCw,
+  AlertCircle,
+  CheckCircle2
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import ArticleModal from '../../components/ArticleModal';
+import RichTextEditor from '../../components/RichTextEditor/RichTextEditor';
+import api from '../../services/api';
 import './AdminBlogs.css';
 
 const AdminBlogs = () => {
-  const { blogs, categories, addBlog, updateBlog, deleteBlog } = useCMS();
+  const { categories } = useCMS();
+
+  // API State
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [apiError, setApiError] = useState('');
+  const [saveSuccess, setSaveSuccess] = useState('');
 
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,14 +42,14 @@ const AdminBlogs = () => {
   const [isNewBlog, setIsNewBlog] = useState(false);
 
   // Blog Editor Form State
-  const [editorForm, setEditorForm] = useState({
+  const defaultForm = {
     title: '',
     slug: '',
     excerpt: '',
-    category_name: 'Traditional Indian Food',
+    category_name: categories[0]?.name || 'Traditional Indian Food',
     author: 'Dr. Nidarsin, BNYS',
-    featured_image_url: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=1000&q=80',
-    content: '<h2>Heading</h2><p>Article body content here...</p>',
+    featured_image_url: '',
+    content: '<h2>Introduction</h2>\n<p>Write your article content here...</p>\n<h3>Key Points</h3>\n<p>Explain the traditional Indian food and lifestyle significance.</p>',
     status: 'Published',
     key_takeaway_1: '',
     key_takeaway_2: '',
@@ -50,7 +57,26 @@ const AdminBlogs = () => {
     seo_title: '',
     meta_description: '',
     focus_keyword: ''
-  });
+  };
+  const [editorForm, setEditorForm] = useState(defaultForm);
+
+  // ── Fetch blogs from API ──
+  const fetchBlogs = useCallback(async () => {
+    setLoading(true);
+    setApiError('');
+    try {
+      const res = await api.get('/v1/admin/blogs');
+      setBlogs(res.data.blogs || []);
+    } catch (err) {
+      setApiError(err.response?.data?.message || 'Failed to load blogs. Is the backend running?');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [fetchBlogs]);
 
   // Filtered Blogs
   const filteredBlogs = useMemo(() => {
@@ -60,37 +86,23 @@ const AdminBlogs = () => {
       const q = searchQuery.toLowerCase();
       const matchesSearch =
         !q ||
-        blog.title.toLowerCase().includes(q) ||
+        blog.title?.toLowerCase().includes(q) ||
         blog.excerpt?.toLowerCase().includes(q) ||
         blog.category_name?.toLowerCase().includes(q);
-
       return matchesStatus && matchesCategory && matchesSearch;
     });
   }, [blogs, statusFilter, categoryFilter, searchQuery]);
 
-  // Open Create Modal
+  // ── Open Create Modal ──
   const handleOpenCreate = () => {
     setIsNewBlog(true);
-    setEditorForm({
-      title: '',
-      slug: '',
-      excerpt: '',
-      category_name: categories[0]?.name || 'Traditional Indian Food',
-      author: 'Dr. Nidarsin, BNYS',
-      featured_image_url: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=1000&q=80',
-      content: `<h2>Traditional Nutritional Wisdom</h2>\n<p>Write your in-depth clinical and dietary article here...</p>\n<h3>Key Principles</h3>\n<p>Explain the traditional Indian food and lifestyle significance.</p>`,
-      status: 'Published',
-      key_takeaway_1: 'Balanced meals support steady digestive fire (Agni).',
-      key_takeaway_2: 'Culturally familiar ingredients enhance nutrient bioavailability.',
-      key_takeaway_3: 'Daily routine alignment prevents chronic metabolic stagnation.',
-      seo_title: '',
-      meta_description: '',
-      focus_keyword: ''
-    });
+    setEditorForm({ ...defaultForm, category_name: categories[0]?.name || 'Traditional Indian Food' });
     setEditingBlog({});
+    setSaveSuccess('');
+    setApiError('');
   };
 
-  // Open Edit Modal
+  // ── Open Edit Modal ──
   const handleOpenEdit = (blog) => {
     setIsNewBlog(false);
     setEditorForm({
@@ -110,10 +122,12 @@ const AdminBlogs = () => {
       focus_keyword: blog.focus_keyword || ''
     });
     setEditingBlog(blog);
+    setSaveSuccess('');
+    setApiError('');
   };
 
-  // Duplicate Blog
-  const handleDuplicate = (blog) => {
+  // ── Duplicate Blog ──
+  const handleDuplicate = async (blog) => {
     const copy = {
       ...blog,
       title: `${blog.title} (Copy)`,
@@ -122,23 +136,35 @@ const AdminBlogs = () => {
       published_at: null
     };
     delete copy._id;
-    addBlog(copy);
+    delete copy.__v;
+    delete copy.created_at;
+    delete copy.updated_at;
+    try {
+      const res = await api.post('/v1/blogs', copy);
+      setBlogs((prev) => [res.data.blog, ...prev]);
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to duplicate article');
+    }
   };
 
-  // Auto-slug generator on title change
+  // ── Auto-slug generator on title change ──
   const handleTitleChange = (val) => {
     const generatedSlug = val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     setEditorForm((prev) => ({
       ...prev,
       title: val,
       slug: isNewBlog || !prev.slug ? generatedSlug : prev.slug,
-      seo_title: `${val} | Nidarsanam Healthcare`
+      seo_title: prev.seo_title || `${val} | Nidarsanam Healthcare`
     }));
   };
 
-  // Save Blog Form
-  const handleSaveBlog = (e) => {
+  // ── Save Blog (Create or Update via API) ──
+  const handleSaveBlog = async (e) => {
     e.preventDefault();
+    setSaving(true);
+    setSaveSuccess('');
+    setApiError('');
+
     const takeaways = [
       editorForm.key_takeaway_1,
       editorForm.key_takeaway_2,
@@ -160,13 +186,36 @@ const AdminBlogs = () => {
       focus_keyword: editorForm.focus_keyword
     };
 
-    if (isNewBlog) {
-      addBlog(blogPayload);
-    } else if (editingBlog?._id) {
-      updateBlog(editingBlog._id, blogPayload);
+    try {
+      if (isNewBlog) {
+        const res = await api.post('/v1/blogs', blogPayload);
+        setBlogs((prev) => [res.data.blog, ...prev]);
+        setSaveSuccess('Article created successfully!');
+      } else {
+        const res = await api.patch(`/v1/blogs/${editingBlog._id}`, blogPayload);
+        setBlogs((prev) => prev.map((b) => b._id === editingBlog._id ? res.data.blog : b));
+        setSaveSuccess('Article updated successfully!');
+      }
+      setTimeout(() => {
+        setEditingBlog(null);
+        setSaveSuccess('');
+      }, 1200);
+    } catch (err) {
+      setApiError(err.response?.data?.message || 'Failed to save article. Please try again.');
+    } finally {
+      setSaving(false);
     }
+  };
 
-    setEditingBlog(null);
+  // ── Delete Blog ──
+  const handleDelete = async (blog) => {
+    if (!window.confirm(`Delete "${blog.title}"? This cannot be undone.`)) return;
+    try {
+      await api.delete(`/v1/blogs/${blog._id}`);
+      setBlogs((prev) => prev.filter((b) => b._id !== blog._id));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete article');
+    }
   };
 
   return (
@@ -214,18 +263,32 @@ const AdminBlogs = () => {
             </select>
           </div>
 
+          <button onClick={fetchBlogs} className="btn btn-secondary btn-sm" title="Refresh from database">
+            <RefreshCw size={15} />
+          </button>
+
           <button onClick={handleOpenCreate} className="btn btn-primary btn-sm">
             <Plus size={15} />
-            <span>+ Create New Blog</span>
+            <span>+ Write New Article</span>
           </button>
         </div>
       </div>
+
+      {/* API Error Banner */}
+      {apiError && !editingBlog && (
+        <div className="admin-alert admin-alert-error" style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <AlertCircle size={18} />
+          <span>{apiError}</span>
+        </div>
+      )}
 
       {/* Blogs Table */}
       <div className="blogs-table-card card">
         <div className="blogs-table-header">
           <div>
-            <h3 className="blogs-table-title">Articles in Nidarsanam Journal ({filteredBlogs.length})</h3>
+            <h3 className="blogs-table-title">
+              Articles in Nidarsanam Journal ({loading ? '…' : filteredBlogs.length})
+            </h3>
             <p className="blogs-table-sub">Manage publications, drafting, SEO metadata, and category assignments.</p>
           </div>
         </div>
@@ -244,118 +307,133 @@ const AdminBlogs = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredBlogs.length === 0 ? (
+              {loading ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '3.5rem 1rem', color: 'var(--nid-stone)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+                      <RefreshCw size={28} style={{ opacity: 0.4, animation: 'spin 1s linear infinite' }} />
+                      <p style={{ margin: 0 }}>Loading articles from database...</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : filteredBlogs.length === 0 ? (
                 <tr>
                   <td colSpan={7} style={{ textAlign: 'center', padding: '3.5rem 1rem', color: 'var(--nid-stone)' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
                       <FileText size={32} style={{ opacity: 0.4 }} />
                       <p style={{ margin: 0, fontWeight: 600, color: 'var(--nid-charcoal)' }}>No articles found</p>
-                      <p style={{ margin: 0, fontSize: '0.875rem' }}>Click &quot;+ Write New Article&quot; above to create your first journal article.</p>
+                      <p style={{ margin: 0, fontSize: '0.875rem' }}>Click &quot;+ Write New Article&quot; above to publish your first journal article.</p>
                     </div>
                   </td>
                 </tr>
               ) : (
                 filteredBlogs.map((blog) => (
                   <tr key={blog._id}>
-                  <td>
-                    <div className="blog-cell-media">
-                      <img
-                        src={blog.featured_image_url}
-                        alt={blog.title}
-                        className="blog-cell-thumb"
-                      />
-                      <div>
-                        <strong className="blog-cell-title">{blog.title}</strong>
-                        <span className="cell-sub">Slug: /{blog.slug}</span>
+                    <td>
+                      <div className="blog-cell-media">
+                        {blog.featured_image_url && (
+                          <img
+                            src={blog.featured_image_url}
+                            alt={blog.title}
+                            className="blog-cell-thumb"
+                            onError={(e) => { e.target.style.display = 'none'; }}
+                          />
+                        )}
+                        <div>
+                          <strong className="blog-cell-title">{blog.title}</strong>
+                          <span className="cell-sub">Slug: /{blog.slug}</span>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>
-                    <span className="badge badge-forest">{blog.category_name}</span>
-                  </td>
-                  <td>
-                    <span className="blog-cell-author">{blog.author || 'Dr. Nidarsin'}</span>
-                  </td>
-                  <td>
-                    <span
-                      className={`status-badge ${
-                        blog.status === 'Published' ? 'status-badge-converted' : 'status-badge-new'
-                      }`}
-                    >
-                      {blog.status}
-                    </span>
-                  </td>
-                  <td>
-                    <span className="cell-sub">👁️ {blog.view_count || 0} views</span>
-                    <span className="cell-sub">⏱️ {blog.reading_time_minutes || 5} min</span>
-                  </td>
-                  <td>
-                    <span>{blog.published_at || 'Not Published'}</span>
-                  </td>
-                  <td>
-                    <div className="blog-row-actions">
-                      <button
-                        className="btn-blog-action"
-                        onClick={() => setPreviewArticle(blog)}
-                        title="Preview Article"
+                    </td>
+                    <td>
+                      <span className="badge badge-forest">{blog.category_name}</span>
+                    </td>
+                    <td>
+                      <span className="blog-cell-author">{blog.author || 'Dr. Nidarsin'}</span>
+                    </td>
+                    <td>
+                      <span
+                        className={`status-badge ${
+                          blog.status === 'Published' ? 'status-badge-converted' : 'status-badge-new'
+                        }`}
                       >
-                        <Eye size={15} />
-                      </button>
-                      <button
-                        className="btn-blog-action"
-                        onClick={() => handleOpenEdit(blog)}
-                        title="Edit Article"
-                      >
-                        <Edit3 size={15} />
-                      </button>
-                      <button
-                        className="btn-blog-action"
-                        onClick={() => handleDuplicate(blog)}
-                        title="Duplicate as Draft"
-                      >
-                        <Copy size={15} />
-                      </button>
-                      <button
-                        className="btn-blog-action btn-blog-delete"
-                        onClick={() => {
-                          if (window.confirm(`Delete "${blog.title}"?`)) {
-                            deleteBlog(blog._id);
-                          }
-                        }}
-                        title="Delete Article"
-                      >
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
+                        {blog.status}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="cell-sub">👁️ {blog.view_count || 0} views</span>
+                      <span className="cell-sub">⏱️ {blog.reading_time_minutes || 5} min read</span>
+                    </td>
+                    <td>
+                      <span>{blog.published_at || 'Not Published'}</span>
+                    </td>
+                    <td>
+                      <div className="blog-row-actions">
+                        <button
+                          className="btn-blog-action"
+                          onClick={() => setPreviewArticle(blog)}
+                          title="Preview Article"
+                        >
+                          <Eye size={15} />
+                        </button>
+                        <button
+                          className="btn-blog-action"
+                          onClick={() => handleOpenEdit(blog)}
+                          title="Edit Article"
+                        >
+                          <Edit3 size={15} />
+                        </button>
+                        <button
+                          className="btn-blog-action"
+                          onClick={() => handleDuplicate(blog)}
+                          title="Duplicate as Draft"
+                        >
+                          <Copy size={15} />
+                        </button>
+                        <button
+                          className="btn-blog-action btn-blog-delete"
+                          onClick={() => handleDelete(blog)}
+                          title="Delete Article"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* =========================================================
-          CREATE / EDIT BLOG MODAL STUDIO
-          ========================================================= */}
+      {/* Create / Edit Blog Modal */}
       {editingBlog && (
         <div className="blog-modal-backdrop" onClick={() => setEditingBlog(null)}>
           <div className="blog-modal-container" onClick={(e) => e.stopPropagation()}>
             <div className="blog-modal-header">
               <h3>{isNewBlog ? 'Create New Journal Article' : 'Edit Article Content'}</h3>
-              <button
-                className="blog-modal-close"
-                onClick={() => setEditingBlog(null)}
-              >
+              <button className="blog-modal-close" onClick={() => setEditingBlog(null)}>
                 <X size={20} />
               </button>
             </div>
 
+            {/* Save feedback */}
+            {saveSuccess && (
+              <div style={{ background: '#f0fdf4', border: '1px solid #86efac', borderRadius: '8px', padding: '0.75rem 1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#166534' }}>
+                <CheckCircle2 size={16} /> {saveSuccess}
+              </div>
+            )}
+            {apiError && (
+              <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: '8px', padding: '0.75rem 1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#991b1b' }}>
+                <AlertCircle size={16} /> {apiError}
+              </div>
+            )}
+
             <form onSubmit={handleSaveBlog} className="blog-modal-form">
               {/* Basic Info */}
               <div className="form-field-group">
-                <label className="form-label">Article Title * (10 - 200 chars)</label>
+                <label className="form-label">Article Title *</label>
                 <input
                   type="text"
                   required
@@ -374,6 +452,7 @@ const AdminBlogs = () => {
                     value={editorForm.slug}
                     onChange={(e) => setEditorForm({ ...editorForm, slug: e.target.value })}
                     className="form-input"
+                    placeholder="auto-generated-from-title"
                   />
                 </div>
 
@@ -401,6 +480,7 @@ const AdminBlogs = () => {
                     value={editorForm.featured_image_url}
                     onChange={(e) => setEditorForm({ ...editorForm, featured_image_url: e.target.value })}
                     className="form-input"
+                    placeholder="https://images.unsplash.com/..."
                   />
                 </div>
 
@@ -416,29 +496,27 @@ const AdminBlogs = () => {
               </div>
 
               <div className="form-field-group">
-                <label className="form-label">Short Excerpt (Summary for cards & search)</label>
+                <label className="form-label">Short Excerpt (Summary for cards &amp; search)</label>
                 <textarea
                   rows="2"
                   value={editorForm.excerpt}
                   onChange={(e) => setEditorForm({ ...editorForm, excerpt: e.target.value })}
-                  placeholder="Brief 2-line preview..."
+                  placeholder="Brief 2-line preview shown on blog cards..."
                   className="form-textarea"
                 />
               </div>
 
               {/* Rich Body Content */}
               <div className="form-field-group">
-                <label className="form-label">Article Rich Content (HTML or formatted text)</label>
-                <textarea
-                  rows="8"
-                  required
+                <label className="form-label">Article Content</label>
+                <RichTextEditor
                   value={editorForm.content}
-                  onChange={(e) => setEditorForm({ ...editorForm, content: e.target.value })}
-                  className="form-textarea form-textarea-code"
+                  onChange={(html) => setEditorForm((prev) => ({ ...prev, content: html }))}
+                  placeholder="Write your article content here — use the toolbar for headings, lists, bold, links..."
                 />
               </div>
 
-              {/* Key Takeaways Builder */}
+              {/* Key Takeaways */}
               <div className="takeaways-builder-box">
                 <span className="builder-title">Key Clinical Takeaways (Bullet highlights)</span>
                 <input
@@ -479,10 +557,10 @@ const AdminBlogs = () => {
                 </div>
 
                 <div className="form-field-group">
-                  <label className="form-label">Focus Keyword</label>
+                  <label className="form-label">Focus Keyword (SEO)</label>
                   <input
                     type="text"
-                    placeholder="e.g. traditional breakfast"
+                    placeholder="e.g. traditional Indian breakfast"
                     value={editorForm.focus_keyword}
                     onChange={(e) => setEditorForm({ ...editorForm, focus_keyword: e.target.value })}
                     className="form-input"
@@ -492,15 +570,11 @@ const AdminBlogs = () => {
 
               {/* Action Buttons */}
               <div className="modal-footer-actions">
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-sm"
-                  onClick={() => setEditingBlog(null)}
-                >
+                <button type="button" className="btn btn-secondary btn-sm" onClick={() => setEditingBlog(null)}>
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary btn-sm">
-                  Save & Publish Article
+                <button type="submit" className="btn btn-primary btn-sm" disabled={saving}>
+                  {saving ? 'Saving...' : isNewBlog ? 'Publish Article' : 'Save Changes'}
                 </button>
               </div>
             </form>

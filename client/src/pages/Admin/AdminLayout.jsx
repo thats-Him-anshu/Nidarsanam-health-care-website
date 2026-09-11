@@ -11,20 +11,17 @@ import {
   X,
   Shield,
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  Settings
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { useCMS } from '../../context/CMSContext';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
   const { admin, logout } = useAuth();
-  const { leads, blogs } = useCMS();
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const newLeadsCount = leads.filter((l) => l.status === 'New').length;
 
   const handleLogout = () => {
     logout();
@@ -40,8 +37,7 @@ const AdminLayout = () => {
     {
       path: '/admin/leads',
       label: 'Leads Management',
-      icon: <Users size={20} />,
-      badge: newLeadsCount > 0 ? newLeadsCount : null
+      icon: <Users size={20} />
     },
     {
       path: '/admin/cms',
@@ -51,8 +47,12 @@ const AdminLayout = () => {
     {
       path: '/admin/blogs',
       label: 'Blog Management',
-      icon: <BookOpen size={20} />,
-      badge: blogs.length
+      icon: <BookOpen size={20} />
+    },
+    {
+      path: '/admin/settings',
+      label: 'Settings',
+      icon: <Settings size={20} />
     },
   ];
 
@@ -60,6 +60,7 @@ const AdminLayout = () => {
     if (location.pathname.includes('/leads')) return 'Leads Management';
     if (location.pathname.includes('/cms')) return 'Website Content CMS';
     if (location.pathname.includes('/blogs')) return 'Blog & Journal Management';
+    if (location.pathname.includes('/settings')) return 'Admin Settings';
     return 'Admin Dashboard';
   };
 

@@ -1,0 +1,250 @@
+/* =============================================
+   Legal Pages — Privacy Policy & Terms of Service
+   ============================================= */
+
+.legal-page {
+  min-height: 100vh;
+  background: var(--nid-parchment, #F5F1EB);
+}
+
+/* Hero */
+.legal-hero {
+  background: linear-gradient(135deg, #1B4D3E 0%, #2D6B58 60%, #3A7D68 100%);
+  padding: 6rem 2rem 4rem;
+  text-align: center;
+}
+
+.legal-hero-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.legal-eyebrow {
+  display: inline-block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #D4A574;
+  background: rgba(212, 165, 116, 0.12);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  padding: 0.35rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 1.25rem;
+}
+
+.legal-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.legal-subtitle {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+}
+
+/* Content layout */
+.legal-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .legal-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Table of Contents */
+.legal-toc {
+  position: sticky;
+  top: 6rem;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(27, 77, 62, 0.08);
+  border: 1px solid rgba(27, 77, 62, 0.08);
+}
+
+.legal-toc h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #D4A574;
+  margin: 0 0 1rem;
+}
+
+.legal-toc ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.legal-toc li {
+  margin-bottom: 0.5rem;
+}
+
+.legal-toc a {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem;
+  color: #1B4D3E;
+  text-decoration: none;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.legal-toc a:hover {
+  color: #D4A574;
+}
+
+/* Body */
+.legal-body {
+  background: #fff;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 2px 12px rgba(27, 77, 62, 0.06);
+  border: 1px solid rgba(27, 77, 62, 0.07);
+}
+
+@media (max-width: 640px) {
+  .legal-body {
+    padding: 1.75rem 1.25rem;
+  }
+}
+
+.legal-intro {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.2rem;
+  color: #4A5568;
+  line-height: 1.8;
+  border-left: 3px solid #D4A574;
+  padding-left: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.legal-body section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(27, 77, 62, 0.08);
+}
+
+.legal-body section:last-of-type {
+  border-bottom: none;
+}
+
+.legal-body h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1B4D3E;
+  margin: 0 0 1.25rem;
+}
+
+.legal-body h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2D6B58;
+  margin: 1.25rem 0 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.legal-body p {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  color: #374151;
+  line-height: 1.8;
+  margin: 0 0 1rem;
+}
+
+.legal-body ul, .legal-body ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.legal-body li {
+  font-family: 'Crimson Text', serif;
+  font-size: 1.05rem;
+  color: #374151;
+  line-height: 1.7;
+  margin-bottom: 0.4rem;
+}
+
+.legal-body a {
+  color: #1B4D3E;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legal-body a:hover {
+  color: #D4A574;
+}
+
+/* Callout box */
+.legal-callout {
+  background: #FFF9F0;
+  border: 1px solid #EDBB80;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.legal-callout strong {
+  display: block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #92400E;
+  margin-bottom: 0.5rem;
+}
+
+.legal-callout p {
+  margin: 0;
+  font-size: 1rem;
+  color: #92400E;
+}
+
+/* Contact box */
+.legal-contact-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  background: #F0F7F4;
+  border: 1px solid rgba(27, 77, 62, 0.15);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  color: #1B4D3E;
+}
+
+/* Footer note */
+.legal-footer-note {
+  background: #F8F8F6;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.legal-footer-note p {
+  font-size: 0.95rem;
+  color: #6B7280;
+  margin: 0;
+  font-style: italic;
+}
