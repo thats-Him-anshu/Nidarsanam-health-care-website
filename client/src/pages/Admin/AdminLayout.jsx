@@ -72,12 +72,7 @@ const AdminLayout = () => {
         <div className="admin-sidebar-header">
           <Link to="/admin/dashboard" className="admin-sidebar-brand">
             <div className="sidebar-emblem">
-              <svg viewBox="0 0 100 100" className="sidebar-svg">
-                <circle cx="50" cy="50" r="46" fill="#1B4D3E" />
-                <circle cx="50" cy="50" r="36" fill="none" stroke="#D4A574" strokeWidth="2.5" />
-                <path d="M50 18 C34 38 34 64 50 82 C66 64 66 38 50 18 Z" fill="#E8EDE8" />
-                <circle cx="50" cy="50" r="8" fill="#D4A574" />
-              </svg>
+              <img src="/logo.png" alt="Nidarsanam Logo" className="sidebar-logo-img" />
             </div>
             <div>
               <span className="sidebar-brand-name">Nidarsanam</span>
