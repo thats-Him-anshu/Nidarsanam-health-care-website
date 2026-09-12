@@ -19,6 +19,7 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
+import ImageUploader from '../../components/ImageUploader/ImageUploader';
 import './AdminCMS.css';
 
 const AdminCMS = () => {
@@ -246,7 +247,7 @@ const AdminCMS = () => {
               </div>
 
               <div className="form-field-group">
-                <label className="form-label">Hero Image URL</label>
+                <label className="form-label">Hero Image (Upload or Paste URL)</label>
                 <input
                   type="url"
                   value={homeForm.hero?.hero_image || ''}
@@ -257,6 +258,17 @@ const AdminCMS = () => {
                     })
                   }
                   className="form-input"
+                  placeholder="/home-hero.jpg or upload below"
+                />
+                <ImageUploader
+                  value={homeForm.hero?.hero_image}
+                  onChange={(url) =>
+                    setHomeForm((prev) => ({
+                      ...prev,
+                      hero: { ...prev.hero, hero_image: url }
+                    }))
+                  }
+                  label="Upload Hero Photo"
                 />
               </div>
             </div>
@@ -313,7 +325,7 @@ const AdminCMS = () => {
             </div>
 
             <div className="form-field-group">
-              <label className="form-label">Philosophy Section Image URL</label>
+              <label className="form-label">Philosophy Section Image (Upload or Paste URL)</label>
               <input
                 type="text"
                 value={homeForm.philosophy?.image || ''}
@@ -325,6 +337,16 @@ const AdminCMS = () => {
                 }
                 className="form-input"
                 placeholder="/home-phylosophy.jpg or image URL"
+              />
+              <ImageUploader
+                value={homeForm.philosophy?.image}
+                onChange={(url) =>
+                  setHomeForm((prev) => ({
+                    ...prev,
+                    philosophy: { ...prev.philosophy, image: url }
+                  }))
+                }
+                label="Upload Philosophy Photo"
               />
             </div>
           </div>
@@ -365,7 +387,7 @@ const AdminCMS = () => {
             </div>
 
             <div className="form-field-group">
-              <label className="form-label">Physician Photo URL</label>
+              <label className="form-label">Physician Photo (Upload or Paste URL)</label>
               <input
                 type="text"
                 value={homeForm.practitioner?.image || ''}
@@ -377,6 +399,16 @@ const AdminCMS = () => {
                 }
                 className="form-input"
                 placeholder="/profile.png or image URL"
+              />
+              <ImageUploader
+                value={homeForm.practitioner?.image}
+                onChange={(url) =>
+                  setHomeForm((prev) => ({
+                    ...prev,
+                    practitioner: { ...prev.practitioner, image: url }
+                  }))
+                }
+                label="Upload Doctor Photo"
               />
             </div>
 
@@ -493,7 +525,7 @@ const AdminCMS = () => {
             </div>
 
             <div className="form-field-group">
-              <label className="form-label">About Page Hero Image URL</label>
+              <label className="form-label">About Page Hero Image (Upload or Paste URL)</label>
               <input
                 type="text"
                 value={aboutForm.hero?.image || ''}
@@ -506,13 +538,23 @@ const AdminCMS = () => {
                 className="form-input"
                 placeholder="/aboutUs-ourJourney.jpg or image URL"
               />
+              <ImageUploader
+                value={aboutForm.hero?.image}
+                onChange={(url) =>
+                  setAboutForm((prev) => ({
+                    ...prev,
+                    hero: { ...prev.hero, image: url }
+                  }))
+                }
+                label="Upload About Hero Photo"
+              />
             </div>
           </div>
 
           <div className="cms-section-card card">
             <h3 className="cms-card-heading">Dr. Nidarsin Biography & Clinical Profile</h3>
             <div className="form-field-group">
-              <label className="form-label">Practitioner Photo URL</label>
+              <label className="form-label">Practitioner Photo (Upload or Paste URL)</label>
               <input
                 type="text"
                 value={aboutForm.practitioner_detail?.image || ''}
@@ -527,6 +569,19 @@ const AdminCMS = () => {
                 }
                 className="form-input"
                 placeholder="/profile.png or image URL"
+              />
+              <ImageUploader
+                value={aboutForm.practitioner_detail?.image}
+                onChange={(url) =>
+                  setAboutForm((prev) => ({
+                    ...prev,
+                    practitioner_detail: {
+                      ...prev.practitioner_detail,
+                      image: url
+                    }
+                  }))
+                }
+                label="Upload Practitioner Photo"
               />
             </div>
 
@@ -632,7 +687,7 @@ const AdminCMS = () => {
             </div>
 
             <div className="form-field-group">
-              <label className="form-label">Journal Hero Banner Image URL</label>
+              <label className="form-label">Journal Hero Banner Image (Upload or Paste URL)</label>
               <input
                 type="text"
                 value={blogForm.hero?.image || ''}
@@ -643,7 +698,17 @@ const AdminCMS = () => {
                   })
                 }
                 className="form-input"
-                placeholder="https://images.unsplash.com/... or image URL"
+                placeholder="https://images.unsplash.com/... or upload below"
+              />
+              <ImageUploader
+                value={blogForm.hero?.image}
+                onChange={(url) =>
+                  setBlogForm((prev) => ({
+                    ...prev,
+                    hero: { ...prev.hero, image: url }
+                  }))
+                }
+                label="Upload Journal Banner Photo"
               />
             </div>
           </div>

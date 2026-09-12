@@ -18,6 +18,7 @@ import {
 import { useCMS } from '../../context/CMSContext';
 import ArticleModal from '../../components/ArticleModal';
 import RichTextEditor from '../../components/RichTextEditor/RichTextEditor';
+import ImageUploader from '../../components/ImageUploader/ImageUploader';
 import api from '../../services/api';
 import './AdminBlogs.css';
 
@@ -474,13 +475,18 @@ const AdminBlogs = () => {
 
               <div className="form-row-2">
                 <div className="form-field-group">
-                  <label className="form-label">Featured Image URL</label>
+                  <label className="form-label">Featured Image (Upload or Paste URL)</label>
                   <input
                     type="url"
                     value={editorForm.featured_image_url}
                     onChange={(e) => setEditorForm({ ...editorForm, featured_image_url: e.target.value })}
                     className="form-input"
-                    placeholder="https://images.unsplash.com/..."
+                    placeholder="https://images.unsplash.com/... or upload below"
+                  />
+                  <ImageUploader
+                    value={editorForm.featured_image_url}
+                    onChange={(url) => setEditorForm((prev) => ({ ...prev, featured_image_url: url }))}
+                    label="Upload Featured Image File"
                   />
                 </div>
 

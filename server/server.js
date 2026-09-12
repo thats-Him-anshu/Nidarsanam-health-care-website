@@ -6,6 +6,20 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'da9m0oyad',
+  api_key: process.env.CLOUDINARY_API_KEY || '237251431278161',
+  api_secret: process.env.CLOUDINARY_API_SECRET || '3tx6SfD9LT1u2VMxr1IqwYgoKQ4'
+});
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
 
 const app = express();
 
@@ -568,7 +582,32 @@ app.put('/api/v1/admin/content', verifyAdmin, async (req, res) => {
   }
 });
 
-// ── 7. START SERVER ──
+// ── 7. IMAGE UPLOAD (CLOUDINARY) ──
+app.post('/api/v1/admin/upload', verifyAdmin, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No image file provided' });
+    }
+
+    const b64 = Buffer.from(req.file.buffer).toString('base64');
+    const dataURI = `data:${req.file.mimetype};base64,${b64}`;
+
+    const result = await cloudinary.uploader.upload(dataURI, {
+      folder: 'nidarsanam_cms',
+      resource_type: 'auto'
+    });
+
+    res.json({
+      success: true,
+      url: result.secure_url,
+      public_id: result.public_id
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message || 'Image upload failed' });
+  }
+});
+
+// ── 8. START SERVER ──
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🌿 Nidarsanam Healthcare API running on port ${PORT}`);
