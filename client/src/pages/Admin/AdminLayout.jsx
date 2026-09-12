@@ -73,13 +73,11 @@ const AdminLayout = () => {
           <Link to="/admin/dashboard" className="admin-sidebar-brand">
             <div className="sidebar-emblem">
               <img
-                src="/logo.png"
+                src="/logo-gold.png"
                 alt="Nidarsanam Logo"
                 className="sidebar-logo-img"
                 onError={(e) => {
-                  if (!e.target.src.endsWith('/logo.PNG')) {
-                    e.target.src = '/logo.PNG';
-                  }
+                  e.target.src = '/logo.png';
                 }}
               />
             </div>

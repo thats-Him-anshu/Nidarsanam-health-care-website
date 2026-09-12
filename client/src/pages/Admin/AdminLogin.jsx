@@ -41,13 +41,11 @@ const AdminLogin = () => {
           <Link to="/" className="admin-login-brand">
             <div className="admin-login-emblem">
               <img
-                src="/logo.png"
+                src="/logo-gold.png"
                 alt="Nidarsanam Logo"
                 className="admin-login-logo-img"
                 onError={(e) => {
-                  if (!e.target.src.endsWith('/logo.PNG')) {
-                    e.target.src = '/logo.PNG';
-                  }
+                  e.target.src = '/logo.png';
                 }}
               />
             </div>

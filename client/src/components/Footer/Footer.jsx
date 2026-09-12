@@ -70,13 +70,11 @@ const Footer = () => {
             <Link to="/" className="footer-brand">
               <div className="footer-emblem">
                 <img
-                  src="/logo.png"
+                  src="/logo-gold.png"
                   alt="Nidarsanam Healthcare"
                   className="footer-logo-img"
                   onError={(e) => {
-                    if (!e.target.src.endsWith('/logo.PNG')) {
-                      e.target.src = '/logo.PNG';
-                    }
+                    e.target.src = '/logo.png';
                   }}
                 />
               </div>
