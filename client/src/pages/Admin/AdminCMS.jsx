@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Save,
   CheckCircle2,
+  AlertCircle,
+  Loader2,
   Globe,
   FileText,
   Home,
@@ -13,15 +15,18 @@ import {
   Trash2,
   Sparkles,
   ExternalLink,
-  HelpCircle
+  HelpCircle,
+  Image as ImageIcon
 } from 'lucide-react';
 import { useCMS } from '../../context/CMSContext';
 import './AdminCMS.css';
 
 const AdminCMS = () => {
-  const { content, updateSectionContent, updateGlobalSettings } = useCMS();
+  const { content, saveContentToAPI } = useCMS();
   const [activeTab, setActiveTab] = useState('home');
-  const [saveNotification, setSaveNotification] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState('');
+  const [saveError, setSaveError] = useState('');
 
   // Local Editable States initialized from CMSContext
   const [homeForm, setHomeForm] = useState(content?.home || {});
@@ -30,52 +35,64 @@ const AdminCMS = () => {
   const [contactForm, setContactForm] = useState(content?.contact || {});
   const [settingsForm, setSettingsForm] = useState(content?.settings || {});
 
-  const triggerSaveNotification = () => {
-    setSaveNotification(true);
-    setTimeout(() => setSaveNotification(false), 3000);
+  // Sync state if remote content updates
+  useEffect(() => {
+    if (content) {
+      setHomeForm(content.home || {});
+      setAboutForm(content.about || {});
+      setBlogForm(content.blog || {});
+      setContactForm(content.contact || {});
+      setSettingsForm(content.settings || {});
+    }
+  }, [content]);
+
+  const executeSave = async (updatedFullContent, tabLabel) => {
+    setIsSaving(true);
+    setSaveSuccess('');
+    setSaveError('');
+    const res = await saveContentToAPI(updatedFullContent);
+    setIsSaving(false);
+    if (res.success) {
+      setSaveSuccess(`${tabLabel} changes saved & published live to database!`);
+      setTimeout(() => setSaveSuccess(''), 4000);
+    } else {
+      setSaveError(res.message || 'Failed to save changes.');
+    }
   };
 
   // Save Home Section
   const handleSaveHome = (e) => {
     e.preventDefault();
-    Object.keys(homeForm).forEach((sec) => {
-      updateSectionContent('home', sec, homeForm[sec]);
-    });
-    triggerSaveNotification();
+    const updated = { ...content, home: homeForm };
+    executeSave(updated, 'Home Page');
   };
 
   // Save About Section
   const handleSaveAbout = (e) => {
     e.preventDefault();
-    Object.keys(aboutForm).forEach((sec) => {
-      updateSectionContent('about', sec, aboutForm[sec]);
-    });
-    triggerSaveNotification();
+    const updated = { ...content, about: aboutForm };
+    executeSave(updated, 'About Us Page');
   };
 
   // Save Blog Section
   const handleSaveBlog = (e) => {
     e.preventDefault();
-    Object.keys(blogForm).forEach((sec) => {
-      updateSectionContent('blog', sec, blogForm[sec]);
-    });
-    triggerSaveNotification();
+    const updated = { ...content, blog: blogForm };
+    executeSave(updated, 'Journal / Blog Page');
   };
 
   // Save Contact Section
   const handleSaveContact = (e) => {
     e.preventDefault();
-    Object.keys(contactForm).forEach((sec) => {
-      updateSectionContent('contact', sec, contactForm[sec]);
-    });
-    triggerSaveNotification();
+    const updated = { ...content, contact: contactForm };
+    executeSave(updated, 'Contact Page');
   };
 
   // Save Global Settings
   const handleSaveSettings = (e) => {
     e.preventDefault();
-    updateGlobalSettings(settingsForm);
-    triggerSaveNotification();
+    const updated = { ...content, settings: settingsForm };
+    executeSave(updated, 'Global Settings');
   };
 
   // FAQ Manager helpers
@@ -116,10 +133,17 @@ const AdminCMS = () => {
           </p>
         </div>
 
-        {saveNotification && (
-          <div className="save-toast animate-fade-in">
+        {saveSuccess && (
+          <div className="save-toast animate-fade-in" style={{ background: '#f0fdf4', border: '1px solid #86efac', color: '#166534' }}>
             <CheckCircle2 size={18} />
-            <span>Changes successfully saved & updated on live website!</span>
+            <span>{saveSuccess}</span>
+          </div>
+        )}
+
+        {saveError && (
+          <div className="save-toast animate-fade-in" style={{ background: '#fef2f2', border: '1px solid #fca5a5', color: '#991b1b' }}>
+            <AlertCircle size={18} />
+            <span>{saveError}</span>
           </div>
         )}
       </div>
@@ -289,17 +313,18 @@ const AdminCMS = () => {
             </div>
 
             <div className="form-field-group">
-              <label className="form-label">Supporting Text</label>
-              <textarea
-                rows="4"
-                value={homeForm.philosophy?.supporting_text || ''}
+              <label className="form-label">Philosophy Section Image URL</label>
+              <input
+                type="text"
+                value={homeForm.philosophy?.image || ''}
                 onChange={(e) =>
                   setHomeForm({
                     ...homeForm,
-                    philosophy: { ...homeForm.philosophy, supporting_text: e.target.value }
+                    philosophy: { ...homeForm.philosophy, image: e.target.value }
                   })
                 }
-                className="form-textarea"
+                className="form-input"
+                placeholder="/home-phylosophy.jpg or image URL"
               />
             </div>
           </div>
@@ -337,6 +362,22 @@ const AdminCMS = () => {
                   className="form-input"
                 />
               </div>
+            </div>
+
+            <div className="form-field-group">
+              <label className="form-label">Physician Photo URL</label>
+              <input
+                type="text"
+                value={homeForm.practitioner?.image || ''}
+                onChange={(e) =>
+                  setHomeForm({
+                    ...homeForm,
+                    practitioner: { ...homeForm.practitioner, image: e.target.value }
+                  })
+                }
+                className="form-input"
+                placeholder="/profile.png or image URL"
+              />
             </div>
 
             <div className="form-field-group">
@@ -391,9 +432,9 @@ const AdminCMS = () => {
           </div>
 
           <div className="cms-save-bar">
-            <button type="submit" className="btn btn-primary btn-lg">
+            <button type="submit" disabled={isSaving} className="btn btn-primary btn-lg">
               <Save size={18} />
-              <span>Save Home Page Changes</span>
+              <span>{isSaving ? 'Saving to Database...' : 'Save Home Page Changes'}</span>
             </button>
           </div>
         </form>
@@ -450,10 +491,45 @@ const AdminCMS = () => {
                 className="form-input"
               />
             </div>
+
+            <div className="form-field-group">
+              <label className="form-label">About Page Hero Image URL</label>
+              <input
+                type="text"
+                value={aboutForm.hero?.image || ''}
+                onChange={(e) =>
+                  setAboutForm({
+                    ...aboutForm,
+                    hero: { ...aboutForm.hero, image: e.target.value }
+                  })
+                }
+                className="form-input"
+                placeholder="/aboutUs-ourJourney.jpg or image URL"
+              />
+            </div>
           </div>
 
           <div className="cms-section-card card">
             <h3 className="cms-card-heading">Dr. Nidarsin Biography & Clinical Profile</h3>
+            <div className="form-field-group">
+              <label className="form-label">Practitioner Photo URL</label>
+              <input
+                type="text"
+                value={aboutForm.practitioner_detail?.image || ''}
+                onChange={(e) =>
+                  setAboutForm({
+                    ...aboutForm,
+                    practitioner_detail: {
+                      ...aboutForm.practitioner_detail,
+                      image: e.target.value
+                    }
+                  })
+                }
+                className="form-input"
+                placeholder="/profile.png or image URL"
+              />
+            </div>
+
             <div className="form-field-group">
               <label className="form-label">Educational Qualification Details</label>
               <input
@@ -510,9 +586,9 @@ const AdminCMS = () => {
           </div>
 
           <div className="cms-save-bar">
-            <button type="submit" className="btn btn-primary btn-lg">
+            <button type="submit" disabled={isSaving} className="btn btn-primary btn-lg">
               <Save size={18} />
-              <span>Save About Page Changes</span>
+              <span>{isSaving ? 'Saving to Database...' : 'Save About Page Changes'}</span>
             </button>
           </div>
         </form>
@@ -554,6 +630,22 @@ const AdminCMS = () => {
                 className="form-input"
               />
             </div>
+
+            <div className="form-field-group">
+              <label className="form-label">Journal Hero Banner Image URL</label>
+              <input
+                type="text"
+                value={blogForm.hero?.image || ''}
+                onChange={(e) =>
+                  setBlogForm({
+                    ...blogForm,
+                    hero: { ...blogForm.hero, image: e.target.value }
+                  })
+                }
+                className="form-input"
+                placeholder="https://images.unsplash.com/... or image URL"
+              />
+            </div>
           </div>
 
           <div className="cms-section-card card">
@@ -590,9 +682,9 @@ const AdminCMS = () => {
           </div>
 
           <div className="cms-save-bar">
-            <button type="submit" className="btn btn-primary btn-lg">
+            <button type="submit" disabled={isSaving} className="btn btn-primary btn-lg">
               <Save size={18} />
-              <span>Save Blog Page Settings</span>
+              <span>{isSaving ? 'Saving to Database...' : 'Save Blog Page Settings'}</span>
             </button>
           </div>
         </form>
@@ -694,9 +786,9 @@ const AdminCMS = () => {
           </div>
 
           <div className="cms-save-bar">
-            <button type="submit" className="btn btn-primary btn-lg">
+            <button type="submit" disabled={isSaving} className="btn btn-primary btn-lg">
               <Save size={18} />
-              <span>Save Contact & FAQs</span>
+              <span>{isSaving ? 'Saving to Database...' : 'Save Contact & FAQs'}</span>
             </button>
           </div>
         </form>
@@ -845,9 +937,9 @@ const AdminCMS = () => {
           </div>
 
           <div className="cms-save-bar">
-            <button type="submit" className="btn btn-primary btn-lg">
+            <button type="submit" disabled={isSaving} className="btn btn-primary btn-lg">
               <Save size={18} />
-              <span>Save Global Settings</span>
+              <span>{isSaving ? 'Saving to Database...' : 'Save Global Settings'}</span>
             </button>
           </div>
         </form>

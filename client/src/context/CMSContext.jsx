@@ -753,6 +753,27 @@ export const CMSProvider = ({ children }) => {
     }
   });
 
+  const [contentLoading, setContentLoading] = useState(true);
+
+  // Fetch live content from MongoDB on initial mount
+  useEffect(() => {
+    const fetchRemoteContent = async () => {
+      try {
+        const res = await api.get('/v1/public/content');
+        if (res.data && res.data.content) {
+          const sanitized = sanitizeContent(res.data.content);
+          setContent(sanitized);
+          localStorage.setItem('nidarsanam_content', JSON.stringify(sanitized));
+        }
+      } catch (err) {
+        console.log('Using local/default content fallback:', err.message);
+      } finally {
+        setContentLoading(false);
+      }
+    };
+    fetchRemoteContent();
+  }, []);
+
   // Watch content and auto-correct if old settings or headings ever appear
   useEffect(() => {
     const rawSettings = content?.settings || {};
@@ -792,6 +813,22 @@ export const CMSProvider = ({ children }) => {
     localStorage.setItem('nidarsanam_content', JSON.stringify(content));
   }, [content]);
 
+  // ── Save to MongoDB API (Admin CMS) ──
+  const saveContentToAPI = async (customContent) => {
+    const contentToSave = customContent || content;
+    try {
+      const res = await api.put('/v1/admin/content', { content: contentToSave });
+      if (res.data && res.data.success) {
+        setContent(contentToSave);
+        localStorage.setItem('nidarsanam_content', JSON.stringify(contentToSave));
+        return { success: true, message: 'Changes published and live for all visitors!' };
+      }
+      return { success: false, message: res.data?.message || 'Failed to save changes.' };
+    } catch (err) {
+      return { success: false, message: err.response?.data?.message || 'Error saving to database. Ensure you are logged in.' };
+    }
+  };
+
   // ── Lead Submission (from public contact form → goes directly to API) ──
   const submitLead = async (leadData) => {
     try {
@@ -810,9 +847,7 @@ export const CMSProvider = ({ children }) => {
     }
   };
 
-
-
-  // CMS Content Updates
+  // CMS Content Updates (updates local state immediately)
   const updateSectionContent = (page, section, newSectionData) => {
     setContent((prev) => ({
       ...prev,
@@ -847,8 +882,10 @@ export const CMSProvider = ({ children }) => {
     <CMSContext.Provider
       value={{
         content,
+        contentLoading,
         categories,
         submitLead,
+        saveContentToAPI,
         updateSectionContent,
         updateGlobalSettings,
         subscribeNewsletter

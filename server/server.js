@@ -131,11 +131,19 @@ const subscriberSchema = new mongoose.Schema({
   is_active: { type: Boolean, default: true }
 });
 
+// Website Content & Images Schema (CMS)
+const siteContentSchema = new mongoose.Schema({
+  key: { type: String, unique: true, default: 'main_content' },
+  data: { type: mongoose.Schema.Types.Mixed, required: true },
+  updated_at: { type: Date, default: Date.now }
+});
+
 // ========== MODELS ==========
 const Admin = mongoose.models.Admin || mongoose.model('Admin', adminSchema);
 const Lead = mongoose.models.Lead || mongoose.model('Lead', leadSchema);
 const BlogPost = mongoose.models.BlogPost || mongoose.model('BlogPost', blogPostSchema);
 const Subscriber = mongoose.models.Subscriber || mongoose.model('Subscriber', subscriberSchema);
+const SiteContent = mongoose.models.SiteContent || mongoose.model('SiteContent', siteContentSchema);
 
 // ========== AUTH MIDDLEWARE ==========
 const verifyAdmin = async (req, res, next) => {
@@ -528,7 +536,39 @@ app.post(['/api/v1/public/newsletter', '/api/newsletter'], async (req, res) => {
   }
 });
 
-// ── 6. START SERVER ──
+// ── 6. SITE CONTENT & IMAGES (CMS) ──
+// Public: Get site content
+app.get(['/api/v1/public/content', '/api/content'], async (req, res) => {
+  try {
+    const doc = await SiteContent.findOne({ key: 'main_content' });
+    res.json({ success: true, content: doc ? doc.data : null });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// Admin: Update site content & images (Persists to MongoDB)
+app.put('/api/v1/admin/content', verifyAdmin, async (req, res) => {
+  try {
+    const { content } = req.body;
+    if (!content) return res.status(400).json({ success: false, message: 'Content data is required' });
+
+    const doc = await SiteContent.findOneAndUpdate(
+      { key: 'main_content' },
+      { data: content, updated_at: new Date() },
+      { upsert: true, new: true }
+    );
+    res.json({
+      success: true,
+      message: 'Website content and images saved successfully to MongoDB!',
+      content: doc.data
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ── 7. START SERVER ──
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🌿 Nidarsanam Healthcare API running on port ${PORT}`);
