@@ -31,21 +31,14 @@
     <meta name="twitter:description" content="Personalised lifestyle health rooted in Panchamahabhuta assessment, traditional Indian food, therapeutic yoga and natural therapies." />
     <meta name="twitter:image" content="https://nidarsanam-health-care-website.vercel.app/home-hero.jpg" />
 
-    <!-- Google Analytics (GA4) template: Automatically activates if VITE_GA_ID is set -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BTJ3WKQ336"></script>
     <script>
-      (function() {
-        var gaId = window.VITE_GA_ID;
-        if (gaId && gaId.startsWith('G-')) {
-          var script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
-          document.head.appendChild(script);
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', gaId);
-        }
-      })();
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-BTJ3WKQ336');
     </script>
 
     <!-- Google Fonts: Crimson Text, Merriweather, Cinzel, Playfair Display & Inter / Plus Jakarta Sans -->
