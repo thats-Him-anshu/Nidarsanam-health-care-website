@@ -556,14 +556,6 @@ const Contact = () => {
                   </div>
                 ))}
               </div>
-
-              {/* Emergency Disclaimer */}
-              <div className="emergency-box">
-                <AlertCircle size={18} className="emergency-icon" />
-                <p>
-                  <strong>Medical Emergency Notice:</strong> {contactData.emergency_disclaimer}
-                </p>
-              </div>
             </div>
           </div>
         </div>
