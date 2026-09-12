@@ -33,7 +33,10 @@ app.use(cors({
     'http://localhost:3000',
     'http://localhost:5174',
     'https://nidarsanam-health-care-website.vercel.app',
-    /\.vercel\.app$/
+    'https://www.nidarsanamhealthcare.com',
+    'https://nidarsanamhealthcare.com',
+    /\.vercel\.app$/,
+    /nidarsanamhealthcare\.com$/
   ],
   credentials: true
 }));
