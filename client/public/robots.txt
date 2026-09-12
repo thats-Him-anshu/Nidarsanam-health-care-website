@@ -6,4 +6,4 @@ Disallow: /admin/
 Disallow: /admin/*
 
 # Sitemap
-Sitemap: https://nidarsanam-health-care-website.vercel.app/sitemap.xml
+Sitemap: https://www.nidarsanamhealthcare.com/sitemap.xml

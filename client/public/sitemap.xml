@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://nidarsanam-health-care-website.vercel.app/</loc>
+    <loc>https://www.nidarsanamhealthcare.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://nidarsanam-health-care-website.vercel.app/about</loc>
+    <loc>https://www.nidarsanamhealthcare.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://nidarsanam-health-care-website.vercel.app/blog</loc>
+    <loc>https://www.nidarsanamhealthcare.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://nidarsanam-health-care-website.vercel.app/contact</loc>
+    <loc>https://www.nidarsanamhealthcare.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://nidarsanam-health-care-website.vercel.app/privacy-policy</loc>
+    <loc>https://www.nidarsanamhealthcare.com/privacy-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://nidarsanam-health-care-website.vercel.app/terms-of-service</loc>
+    <loc>https://www.nidarsanamhealthcare.com/terms-of-service</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
