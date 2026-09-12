@@ -72,7 +72,16 @@ const AdminLayout = () => {
         <div className="admin-sidebar-header">
           <Link to="/admin/dashboard" className="admin-sidebar-brand">
             <div className="sidebar-emblem">
-              <img src="/logo.png" alt="Nidarsanam Logo" className="sidebar-logo-img" />
+              <img
+                src="/logo.png"
+                alt="Nidarsanam Logo"
+                className="sidebar-logo-img"
+                onError={(e) => {
+                  if (!e.target.src.endsWith('/logo.PNG')) {
+                    e.target.src = '/logo.PNG';
+                  }
+                }}
+              />
             </div>
             <div>
               <span className="sidebar-brand-name">Nidarsanam</span>
