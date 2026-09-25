@@ -976,6 +976,19 @@ const AdminCMS = () => {
                 />
               </div>
             </div>
+
+            <div className="form-row-2">
+              <div className="form-field-group">
+                <label className="form-label">Facebook Page URL</label>
+                <input
+                  type="url"
+                  placeholder="https://facebook.com/nidarsanam"
+                  value={settingsForm.facebook_url || ''}
+                  onChange={(e) => setSettingsForm({ ...settingsForm, facebook_url: e.target.value })}
+                  className="form-input"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="cms-section-card card">
