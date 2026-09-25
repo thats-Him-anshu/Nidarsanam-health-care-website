@@ -365,7 +365,7 @@ const AdminLeads = () => {
                     <td>
                       <select
                         value={lead.status}
-                        onChange={(e) => updateLeadStatus(lead._id, e.target.value)}
+                        onChange={(e) => handleUpdateStatus(lead._id, e.target.value)}
                         className={`status-select ${getStatusBadgeClass(lead.status)}`}
                       >
                         <option value="New">New</option>
@@ -434,8 +434,7 @@ const AdminLeads = () => {
                   <select
                     value={activeLead.status}
                     onChange={(e) => {
-                      updateLeadStatus(activeLead._id, e.target.value);
-                      setActiveLead({ ...activeLead, status: e.target.value });
+                      handleUpdateStatus(activeLead._id, e.target.value);
                     }}
                     className={`status-select-lg ${getStatusBadgeClass(activeLead.status)}`}
                   >
