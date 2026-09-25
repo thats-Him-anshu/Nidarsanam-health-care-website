@@ -62,10 +62,7 @@ const Home = () => {
           <div className="hero-grid">
             {/* Left Content */}
             <div className="hero-content">
-              <div className="hero-badge animate-fade-in">
-                <Sparkles size={14} className="hero-badge-sparkle" />
-                <span>Roots & Elements Lifestyle Health</span>
-              </div>
+
 
               <h1 className="hero-title animate-fade-in">
                 {hero.headline || 'Rebuild Your Health. Return to Your Roots.'}
