@@ -464,7 +464,9 @@ const AdminLeads = () => {
                     <span>WhatsApp</span>
                   </a>
                   <a
-                    href={`mailto:${activeLead.email}`}
+                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(activeLead.email || '')}&su=${encodeURIComponent(`Regarding Your Consultation Request — Nidarsanam Healthcare`)}&body=${encodeURIComponent(`Hello ${activeLead.name},\n\nThank you for reaching out to Nidarsanam Healthcare.\n\nWe are following up regarding your consultation request for ${activeLead.health_concern || 'your health concern'}. We would love to assist you on your journey to better health.\n\nPlease reply to this email or call us to confirm your preferred appointment slot.\n\nWith care,\nDr. Nidarsin's Clinical Team\nNidarsanam Healthcare\nnidarsanamhealthcare.com`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="btn btn-secondary btn-sm"
                   >
                     <Mail size={15} />
